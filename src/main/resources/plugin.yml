@@ -1,0 +1,19 @@
+name: BiomesCompass
+version: 1.0.0
+description: Adds a special compass which can show you the way to your desired biomes.
+author: rusthero
+
+api-version: 1.13
+main: io.github.rusthero.biomescompass.BiomesCompassPlugin
+
+permissions:
+  biomescompass.*:
+    children:
+      biomescompass.use: true
+      biomescompass.switch: true
+  biomescompass.use:
+    description: Allows being able to see the arrow of biomes compass.
+    default: true
+  biomescompass.switch:
+    description: Allows switching biomes of a biomes compass by right clicking.
+    default: true
