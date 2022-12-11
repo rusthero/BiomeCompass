@@ -9,11 +9,11 @@ main: io.github.rusthero.biomescompass.BiomesCompass
 permissions:
   biomescompass.*:
     children:
+      biomescompass.craft: true
       biomescompass.use: true
-      biomescompass.switch: true
-  biomescompass.use:
-    description: Allows being able to see the arrow of biomes compass.
+  biomescompass.craft:
+    description: Allows crafting a new biomes compass.
     default: true
-  biomescompass.switch:
+  biomescompass.use:
     description: Allows switching biomes of a biomes compass by right clicking.
     default: true

@@ -17,4 +17,5 @@ repositories {
 
 dependencies {
     implementation "org.spigotmc:spigot-api:1.13-R0.1-SNAPSHOT"
+    implementation "com.google.guava:guava:31.1-jre"
 }
