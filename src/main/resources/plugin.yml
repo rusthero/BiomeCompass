@@ -4,7 +4,7 @@ description: Adds a special compass which can show you the way to your desired b
 author: rusthero
 
 api-version: 1.13
-main: io.github.rusthero.biomescompass.BiomesCompassPlugin
+main: io.github.rusthero.biomescompass.BiomesCompass
 
 permissions:
   biomescompass.*:
