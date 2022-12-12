@@ -2,7 +2,7 @@ package io.github.rusthero.biomescompass.listener;
 
 import io.github.rusthero.biomescompass.BiomesCompass;
 import io.github.rusthero.biomescompass.item.BiomesCompassItem;
-import io.github.rusthero.biomescompass.task.OpenLocateBiomeMenuTask;
+import io.github.rusthero.biomescompass.locate.BiomeLocator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,6 +24,15 @@ public class ItemUseListener implements Listener {
         Player player = event.getPlayer();
         if (!player.hasPermission("biomescompass.use")) return;
 
-        new OpenLocateBiomeMenuTask(biomesCompass, player);
+        BiomeLocator locator = biomesCompass.getBiomeLocators().get(player);
+        if (locator.isRunning()) {
+            player.sendMessage("Please wait, searching.");
+            return;
+        }
+        if (locator.isOnCooldown()) {
+            player.sendMessage("Please wait, you are on cooldown.");
+            return;
+        }
+        biomesCompass.getLocateBiomeMenu().open(player);
     }
 }
