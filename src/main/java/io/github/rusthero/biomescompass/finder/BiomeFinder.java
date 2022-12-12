@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface BiomeFinder {
     Optional<Location> locateBiome(Biome biome);
+
     void asyncLocateBiome(Biome biome, JavaPlugin plugin, PlayerBiomeFinder.LocateBiomeCallback callback);
 }

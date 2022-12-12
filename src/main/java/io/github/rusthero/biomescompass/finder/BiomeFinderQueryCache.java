@@ -23,8 +23,10 @@ public class BiomeFinderQueryCache {
         return cache.getUnchecked(query);
     }
 
-    public void invalidate(BiomeFinderQuery query) {
+    public BiomeFinderQuery.Result fetch(BiomeFinderQuery query) {
         cache.invalidate(query);
+
+        return get(query);
     }
 
     private class Loader extends CacheLoader<BiomeFinderQuery, BiomeFinderQuery.Result> {

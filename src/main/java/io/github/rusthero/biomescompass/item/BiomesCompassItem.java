@@ -1,5 +1,6 @@
 package io.github.rusthero.biomescompass.item;
 
+import io.github.rusthero.biomescompass.finder.PlayerBiomeFinder;
 import io.github.rusthero.biomescompass.gui.BiomeSelectMenu;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,7 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class BiomesCompassItem extends ItemStack {
     public BiomesCompassItem() {
-        setType(Material.COMPASS);
+        super(Material.COMPASS, 1);
 
         ItemMeta meta = getItemMeta();
         meta.setDisplayName(ChatColor.DARK_GREEN + "Biomes Compass");
@@ -24,7 +25,6 @@ public class BiomesCompassItem extends ItemStack {
     }
 
     public static ShapedRecipe getRecipe(JavaPlugin plugin) {
-        // TODO Add permission check for the recipe
         ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(plugin, "biomes_compass"), new BiomesCompassItem());
 
         recipe.shape("SLS", "LCL", "SLS");
@@ -36,14 +36,26 @@ public class BiomesCompassItem extends ItemStack {
         return recipe;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ItemStack item)) return false;
+        if (!item.hasItemMeta()) return false;
+
+        return (getType().equals(item.getType()) && getItemMeta().equals(item.getItemMeta()));
+    }
+
     public static class Listener implements org.bukkit.event.Listener {
         @EventHandler
         private void use(PlayerInteractEvent event) {
             if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) return;
-            if (event.getItem() == null || !event.getItem().equals(new BiomesCompassItem())) return;
+            if (event.getItem() == null || !new BiomesCompassItem().equals(event.getItem())) return;
 
             Player player = event.getPlayer();
             if (!player.hasPermission("biomescompass.use")) return;
+            if (PlayerBiomeFinder.Container.singleton().get(player).isLocked()) {
+                player.sendMessage("Please wait, searching.");
+                return;
+            }
 
             BiomeSelectMenu.singleton().open(player);
         }

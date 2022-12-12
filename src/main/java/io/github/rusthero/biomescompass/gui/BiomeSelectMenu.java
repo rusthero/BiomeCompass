@@ -3,6 +3,7 @@ package io.github.rusthero.biomescompass.gui;
 import io.github.rusthero.biomescompass.finder.PlayerBiomeFinder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.HumanEntity;
@@ -17,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 public class BiomeSelectMenu implements Listener {
     private static BiomeSelectMenu singleton;
@@ -147,7 +149,6 @@ public class BiomeSelectMenu implements Listener {
             if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
 
             final Player player = (Player) event.getWhoClicked();
-            player.sendMessage("You clicked at slot " + event.getRawSlot());
 
             if (event.getRawSlot() == 53 && event.getInventory().equals(menu[0])) {
                 player.closeInventory();
@@ -157,17 +158,24 @@ public class BiomeSelectMenu implements Listener {
                 player.openInventory(menu[0]);
             } else {
                 player.closeInventory();
+                player.sendMessage("Search started!");
 
                 // TODO This may cause null exception when user selects an item in his inventory that does not exist in itemsToBiomes
                 Biome biome = itemsToBiomes.get(clickedItem);
 
-                new PlayerBiomeFinder(player).asyncLocateBiome(biome, plugin, optLocation -> {
-                    optLocation.ifPresentOrElse(location -> {
-                        player.sendMessage("Closest biome you selected is at: " + location.toVector());
-                        player.setCompassTarget(location);
-                    }, () -> {
-                        player.sendMessage("Could not find the biome in max search area");
-                    });
+                PlayerBiomeFinder.Container.singleton().get(player).asyncLocateBiome(biome, plugin, new PlayerBiomeFinder.LocateBiomeCallback() {
+                    @Override
+                    public void onQueryDone(Optional<Location> optLocation) {
+                        optLocation.ifPresentOrElse(location -> {
+                            player.sendMessage("Closest biome you selected is at: " + location.toVector());
+                            player.setCompassTarget(location);
+                        }, () -> player.sendMessage("Could not find the biome in max search area"));
+                    }
+
+                    @Override
+                    public void isLocked() {
+                        player.sendMessage("You are already searching a biome!");
+                    }
                 });
             }
         }
