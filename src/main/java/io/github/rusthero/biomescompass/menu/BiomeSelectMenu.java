@@ -1,8 +1,8 @@
-package io.github.rusthero.biomescompass;
+package io.github.rusthero.biomescompass.menu;
 
+import io.github.rusthero.biomescompass.finder.PlayerBiomeFinder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.HumanEntity;
@@ -16,13 +16,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
-import java.util.Optional;
 
-class BiomesMenu implements Listener {
-    private final Inventory[] menu = new Inventory[2];
-    private final HashMap<ItemStack, Biome> itemsToBiomes = new HashMap<>();
+public class BiomeSelectMenu implements Listener {
+    private static BiomeSelectMenu singleton;
 
-    BiomesMenu() {
+    public static BiomeSelectMenu singleton() {
+        if (singleton == null) singleton = new BiomeSelectMenu();
+
+        return singleton;
+    }
+
+    private static final Inventory[] menu = new Inventory[2];
+    private static final HashMap<ItemStack, Biome> itemsToBiomes = new HashMap<>();
+
+    private BiomeSelectMenu() {
         menu[0] = Bukkit.createInventory(null, 54, ChatColor.YELLOW + "[1]" + ChatColor.DARK_GREEN + "Select a biome to lock your compass:");
         menu[1] = Bukkit.createInventory(null, 54, ChatColor.YELLOW + "[2]" + ChatColor.DARK_GREEN + "Select a biome to lock your compass:");
 
@@ -110,66 +117,8 @@ class BiomesMenu implements Listener {
         // TODO Add next page and before page buttons
     }
 
-    void open(final HumanEntity entity) {
+    public void open(final HumanEntity entity) {
         entity.openInventory(menu[0]);
-    }
-
-    @EventHandler
-    private void onMenuClick(final InventoryClickEvent event) {
-        if (!event.getInventory().equals(menu[0]) && !event.getInventory().equals(menu[1])) return;
-
-        event.setCancelled(true);
-
-        final ItemStack clickedItem = event.getCurrentItem();
-        if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
-
-        final Player player = (Player) event.getWhoClicked();
-        player.sendMessage("You clicked at slot " + event.getRawSlot());
-
-        if (event.getRawSlot() == 53 && event.getInventory().equals(menu[0])) {
-            player.closeInventory();
-            player.openInventory(menu[1]);
-        } else if (event.getRawSlot() == 45 && event.getInventory().equals(menu[1])) {
-            player.closeInventory();
-            player.openInventory(menu[0]);
-        } else {
-            // TODO Add cooldown
-            player.closeInventory();
-            Bukkit.getScheduler().runTaskAsynchronously(Bukkit.getPluginManager().getPlugin("BiomesCompass"), () -> {
-                // TODO This may cause null exception when user selects an item in his inventory that does not exist in itemsToBiomes
-                Biome target = itemsToBiomes.get(clickedItem);
-
-                Optional<Location> location = getClosestTargetBiome(player.getLocation(), target);
-
-                location.ifPresentOrElse(location1 -> {
-                    player.sendMessage("Closest biome you selected is at: " + location.get().toVector());
-                    player.setCompassTarget(location.get());
-                }, () -> {
-                    player.sendMessage("Could not find the biome in max search area");
-                });
-            });
-        }
-    }
-
-    private Optional<Location> getClosestTargetBiome(Location origin, Biome biome) {
-        BiomesQuery query = new BiomesQuery(origin, biome);
-        BiomesQuery.Result res = BiomesQuery.cache.getUnchecked(query);
-        Optional<Location> location = res.getLocation(biome);
-
-        if (location.isEmpty()) {
-            if (!res.didBreakEarly()) return Optional.empty();
-
-            res = query.fetch();
-            BiomesQuery.cache.put(query, res);
-            location = res.getLocation(biome);
-        }
-
-        return location;
-    }
-
-    @EventHandler
-    private void cancelDragging(final InventoryDragEvent event) {
-        if (event.getInventory().equals(menu[0]) || event.getInventory().equals(menu[1])) event.setCancelled(true);
     }
 
     private ItemStack itemWithName(Material material, String name) {
@@ -178,6 +127,48 @@ class BiomesMenu implements Listener {
         meta.setDisplayName(name);
         item.setItemMeta(meta);
         return item;
+    }
+
+    public static class Listener implements org.bukkit.event.Listener {
+        @EventHandler
+        private void onMenuClick(final InventoryClickEvent event) {
+            if (!event.getInventory().equals(menu[0]) && !event.getInventory().equals(menu[1])) return;
+
+            event.setCancelled(true);
+
+            final ItemStack clickedItem = event.getCurrentItem();
+            if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
+
+            final Player player = (Player) event.getWhoClicked();
+            player.sendMessage("You clicked at slot " + event.getRawSlot());
+
+            if (event.getRawSlot() == 53 && event.getInventory().equals(menu[0])) {
+                player.closeInventory();
+                player.openInventory(menu[1]);
+            } else if (event.getRawSlot() == 45 && event.getInventory().equals(menu[1])) {
+                player.closeInventory();
+                player.openInventory(menu[0]);
+            } else {
+                // TODO Add cooldown
+                player.closeInventory();
+                Bukkit.getScheduler().runTaskAsynchronously(Bukkit.getPluginManager().getPlugin("BiomesCompass"), () -> {
+                    // TODO This may cause null exception when user selects an item in his inventory that does not exist in itemsToBiomes
+                    Biome biome = itemsToBiomes.get(clickedItem);
+
+                    new PlayerBiomeFinder(player).locateBiome(biome).ifPresentOrElse(location -> {
+                        player.sendMessage("Closest biome you selected is at: " + location.toVector());
+                        player.setCompassTarget(location);
+                    }, () -> {
+                        player.sendMessage("Could not find the biome in max search area");
+                    });
+                });
+            }
+        }
+
+        @EventHandler
+        private void cancelDragging(final InventoryDragEvent event) {
+            if (event.getInventory().equals(menu[0]) || event.getInventory().equals(menu[1])) event.setCancelled(true);
+        }
     }
 }
 

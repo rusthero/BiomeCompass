@@ -1,8 +1,5 @@
-package io.github.rusthero.biomescompass;
+package io.github.rusthero.biomescompass.finder;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
 import org.bukkit.util.Vector;
@@ -10,18 +7,11 @@ import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.Optional;
 
-public class BiomesQuery {
-    static final LoadingCache<BiomesQuery, Result> cache = CacheBuilder.newBuilder().maximumSize(100).build(new CacheLoader<>() {
-        @Override
-        public BiomesQuery.Result load(BiomesQuery query) {
-            return query.fetch();
-        }
-    });
-
+public class BiomeFinderQuery {
     private final Location origin;
     private final Biome target;
 
-    public BiomesQuery(Location origin, Biome target) {
+    public BiomeFinderQuery(Location origin, Biome target) {
         this.origin = origin;
         this.target = target;
     }
@@ -65,7 +55,7 @@ public class BiomesQuery {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof BiomesQuery query)) return false;
+        if (!(obj instanceof BiomeFinderQuery query)) return false;
         // Normally this is considered bad, but fine for cache purposes
         return (obj.hashCode() == query.hashCode());
     }
@@ -78,7 +68,7 @@ public class BiomesQuery {
 
     public static class Result {
         private final HashMap<Biome, Location> biomeLocations;
-        private boolean earlyBreak = false;
+        private final boolean earlyBreak;
 
         Result(HashMap<Biome, Location> biomeLocations, boolean earlyBreak) {
             this.biomeLocations = biomeLocations;
