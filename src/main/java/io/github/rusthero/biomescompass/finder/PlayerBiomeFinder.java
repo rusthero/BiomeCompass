@@ -32,7 +32,7 @@ public class PlayerBiomeFinder {
 
     private boolean running = false;
     private boolean onCooldown = false;
-    
+
     public void asyncLocateBiome(Biome biome, JavaPlugin plugin, LocateBiomeCallback callback) {
         if (running) {
             callback.onRunning();
@@ -58,14 +58,6 @@ public class PlayerBiomeFinder {
 
     public boolean isOnCooldown() {
         return onCooldown;
-    }
-
-    public interface LocateBiomeCallback {
-        void onQueryDone(Optional<Location> location);
-
-        void onRunning();
-
-        void onCooldown();
     }
 
     public static class Container extends HashSet<PlayerBiomeFinder> {
