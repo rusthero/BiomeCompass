@@ -6,13 +6,12 @@ import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashSet;
 import java.util.Optional;
 
-public class PlayerBiomeLocator {
+public class BiomeLocator {
     final Player player;
 
-    PlayerBiomeLocator(Player player) {
+    BiomeLocator(Player player) {
         this.player = player;
     }
 
@@ -58,31 +57,5 @@ public class PlayerBiomeLocator {
 
     public boolean isOnCooldown() {
         return onCooldown;
-    }
-
-    public static class Container extends HashSet<PlayerBiomeLocator> {
-        private static Container singleton;
-
-        public static Container singleton() {
-            if (singleton == null) singleton = new Container();
-
-            return singleton;
-        }
-
-        private Container() {
-
-        }
-
-        public PlayerBiomeLocator get(Player player) {
-            Optional<PlayerBiomeLocator> optFinder = this.stream().filter(finder -> finder.player.equals(player)).findFirst();
-
-            if (optFinder.isEmpty()) {
-                PlayerBiomeLocator newFinder = new PlayerBiomeLocator(player);
-                add(newFinder);
-                return newFinder;
-            } else {
-                return optFinder.get();
-            }
-        }
     }
 }

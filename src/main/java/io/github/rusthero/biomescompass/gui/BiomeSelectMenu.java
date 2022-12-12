@@ -1,7 +1,7 @@
 package io.github.rusthero.biomescompass.gui;
 
 import io.github.rusthero.biomescompass.locate.LocateBiomeCallback;
-import io.github.rusthero.biomescompass.locate.PlayerBiomeLocator;
+import io.github.rusthero.biomescompass.locate.BiomeLocatorRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -164,7 +164,7 @@ public class BiomeSelectMenu implements Listener {
                 // TODO This may cause null exception when user selects an item in his inventory that does not exist in itemsToBiomes
                 Biome biome = itemsToBiomes.get(clickedItem);
 
-                PlayerBiomeLocator.Container.singleton().get(player).asyncLocateBiome(biome, plugin, new LocateBiomeCallback() {
+                BiomeLocatorRegistry.getInstance().get(player).asyncLocateBiome(biome, plugin, new LocateBiomeCallback() {
                     @Override
                     public void onQueryDone(Optional<Location> optLocation) {
                         optLocation.ifPresentOrElse(location -> {

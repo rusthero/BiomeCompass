@@ -1,7 +1,8 @@
 package io.github.rusthero.biomescompass.item;
 
-import io.github.rusthero.biomescompass.locate.PlayerBiomeLocator;
+import io.github.rusthero.biomescompass.locate.BiomeLocator;
 import io.github.rusthero.biomescompass.gui.BiomeSelectMenu;
+import io.github.rusthero.biomescompass.locate.BiomeLocatorRegistry;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -53,7 +54,7 @@ public class BiomesCompassItem extends ItemStack {
             Player player = event.getPlayer();
             if (!player.hasPermission("biomescompass.use")) return;
 
-            PlayerBiomeLocator finder = PlayerBiomeLocator.Container.singleton().get(player);
+            BiomeLocator finder = BiomeLocatorRegistry.getInstance().get(player);
             if (finder.isRunning()) {
                 player.sendMessage("Please wait, searching.");
                 return;
