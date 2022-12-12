@@ -1,39 +1,23 @@
 package io.github.rusthero.biomescompass.gui;
 
-import io.github.rusthero.biomescompass.locate.LocateBiomeCallback;
-import io.github.rusthero.biomescompass.locate.BiomeLocatorRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.Optional;
 
-public class BiomeSelectMenu implements Listener {
-    private static BiomeSelectMenu singleton;
-
-    public static BiomeSelectMenu singleton() {
-        if (singleton == null) singleton = new BiomeSelectMenu();
-
-        return singleton;
-    }
-
+public class LocateBiomeMenu implements Listener {
     private static final Inventory[] menu = new Inventory[2];
     private static final HashMap<ItemStack, Biome> itemsToBiomes = new HashMap<>();
 
-    private BiomeSelectMenu() {
+    public LocateBiomeMenu() {
         menu[0] = Bukkit.createInventory(null, 54, ChatColor.YELLOW + "[1]" + ChatColor.DARK_GREEN + "Select a biome to lock your compass:");
         menu[1] = Bukkit.createInventory(null, 54, ChatColor.YELLOW + "[2]" + ChatColor.DARK_GREEN + "Select a biome to lock your compass:");
 
@@ -133,63 +117,12 @@ public class BiomeSelectMenu implements Listener {
         return item;
     }
 
-    public static class Listener implements org.bukkit.event.Listener {
-        private final JavaPlugin plugin;
+    public Optional<Biome> itemToBiome(ItemStack item) {
+        return Optional.ofNullable(itemsToBiomes.get(item));
+    }
 
-        public Listener(JavaPlugin plugin) {
-            this.plugin = plugin;
-        }
-
-        @EventHandler
-        private void onMenuClick(final InventoryClickEvent event) {
-            if (!event.getInventory().equals(menu[0]) && !event.getInventory().equals(menu[1])) return;
-
-            event.setCancelled(true);
-
-            final ItemStack clickedItem = event.getCurrentItem();
-            if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
-
-            final Player player = (Player) event.getWhoClicked();
-
-            if (event.getRawSlot() == 53 && event.getInventory().equals(menu[0])) {
-                player.closeInventory();
-                player.openInventory(menu[1]);
-            } else if (event.getRawSlot() == 45 && event.getInventory().equals(menu[1])) {
-                player.closeInventory();
-                player.openInventory(menu[0]);
-            } else {
-                player.closeInventory();
-                player.sendMessage("Search started!");
-
-                // TODO This may cause null exception when user selects an item in his inventory that does not exist in itemsToBiomes
-                Biome biome = itemsToBiomes.get(clickedItem);
-
-                BiomeLocatorRegistry.getInstance().get(player).asyncLocateBiome(biome, plugin, new LocateBiomeCallback() {
-                    @Override
-                    public void onQueryDone(Optional<Location> optLocation) {
-                        optLocation.ifPresentOrElse(location -> {
-                            player.sendMessage("Closest biome you selected is at: " + location.toVector());
-                            player.setCompassTarget(location);
-                        }, () -> player.sendMessage("Could not find the biome in max search area"));
-                    }
-
-                    @Override
-                    public void onRunning() {
-                        player.sendMessage("You are already searching a biome!");
-                    }
-
-                    @Override
-                    public void onCooldown() {
-                        player.sendMessage("Please wait, you are on cooldown!");
-                    }
-                });
-            }
-        }
-
-        @EventHandler
-        private void cancelDragging(final InventoryDragEvent event) {
-            if (event.getInventory().equals(menu[0]) || event.getInventory().equals(menu[1])) event.setCancelled(true);
-        }
+    public boolean contains(Inventory inventory) {
+        return inventory.equals(menu[0]) || inventory.equals(menu[1]);
     }
 }
 

@@ -6,15 +6,9 @@ import java.util.HashSet;
 import java.util.Optional;
 
 public final class BiomeLocatorRegistry {
-    private static final BiomeLocatorRegistry instance = new BiomeLocatorRegistry();
-
-    public static BiomeLocatorRegistry getInstance() {
-        return instance;
-    }
-
     private final HashSet<BiomeLocator> biomeLocators;
 
-    private BiomeLocatorRegistry() {
+    public BiomeLocatorRegistry() {
         biomeLocators = new HashSet<>();
     }
 
