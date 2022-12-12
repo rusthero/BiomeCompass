@@ -1,6 +1,6 @@
 package io.github.rusthero.biomescompass.item;
 
-import io.github.rusthero.biomescompass.menu.BiomeSelectMenu;
+import io.github.rusthero.biomescompass.gui.BiomeSelectMenu;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

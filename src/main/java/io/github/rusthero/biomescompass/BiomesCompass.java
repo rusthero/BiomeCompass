@@ -1,7 +1,7 @@
 package io.github.rusthero.biomescompass;
 
 import io.github.rusthero.biomescompass.item.BiomesCompassItem;
-import io.github.rusthero.biomescompass.menu.BiomeSelectMenu;
+import io.github.rusthero.biomescompass.gui.BiomeSelectMenu;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 

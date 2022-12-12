@@ -1,4 +1,4 @@
-package io.github.rusthero.biomescompass.menu;
+package io.github.rusthero.biomescompass.gui;
 
 import io.github.rusthero.biomescompass.finder.PlayerBiomeFinder;
 import org.bukkit.Bukkit;
@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 
@@ -130,6 +131,12 @@ public class BiomeSelectMenu implements Listener {
     }
 
     public static class Listener implements org.bukkit.event.Listener {
+        private final JavaPlugin plugin;
+
+        public Listener(JavaPlugin plugin) {
+            this.plugin = plugin;
+        }
+
         @EventHandler
         private void onMenuClick(final InventoryClickEvent event) {
             if (!event.getInventory().equals(menu[0]) && !event.getInventory().equals(menu[1])) return;
@@ -149,13 +156,13 @@ public class BiomeSelectMenu implements Listener {
                 player.closeInventory();
                 player.openInventory(menu[0]);
             } else {
-                // TODO Add cooldown
                 player.closeInventory();
-                Bukkit.getScheduler().runTaskAsynchronously(Bukkit.getPluginManager().getPlugin("BiomesCompass"), () -> {
-                    // TODO This may cause null exception when user selects an item in his inventory that does not exist in itemsToBiomes
-                    Biome biome = itemsToBiomes.get(clickedItem);
 
-                    new PlayerBiomeFinder(player).locateBiome(biome).ifPresentOrElse(location -> {
+                // TODO This may cause null exception when user selects an item in his inventory that does not exist in itemsToBiomes
+                Biome biome = itemsToBiomes.get(clickedItem);
+
+                new PlayerBiomeFinder(player).asyncLocateBiome(biome, plugin, optLocation -> {
+                    optLocation.ifPresentOrElse(location -> {
                         player.sendMessage("Closest biome you selected is at: " + location.toVector());
                         player.setCompassTarget(location);
                     }, () -> {
