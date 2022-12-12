@@ -1,4 +1,4 @@
-package io.github.rusthero.biomescompass.finder;
+package io.github.rusthero.biomescompass.locate;
 
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
@@ -7,11 +7,11 @@ import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.Optional;
 
-public class BiomeFinderQuery {
+public class LocateBiomeQuery {
     private final Location origin;
     private final Biome target;
 
-    public BiomeFinderQuery(Location origin, Biome target) {
+    public LocateBiomeQuery(Location origin, Biome target) {
         this.origin = origin;
         this.target = target;
     }
@@ -55,7 +55,7 @@ public class BiomeFinderQuery {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof BiomeFinderQuery query)) return false;
+        if (!(obj instanceof LocateBiomeQuery query)) return false;
         // Normally this is considered bad, but fine for cache purposes
         return (obj.hashCode() == query.hashCode());
     }

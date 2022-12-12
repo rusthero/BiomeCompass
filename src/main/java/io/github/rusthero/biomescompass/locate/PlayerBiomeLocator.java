@@ -1,4 +1,4 @@
-package io.github.rusthero.biomescompass.finder;
+package io.github.rusthero.biomescompass.locate;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -9,22 +9,22 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashSet;
 import java.util.Optional;
 
-public class PlayerBiomeFinder {
+public class PlayerBiomeLocator {
     final Player player;
 
-    PlayerBiomeFinder(Player player) {
+    PlayerBiomeLocator(Player player) {
         this.player = player;
     }
 
     public Optional<Location> locateBiome(Biome biome) {
-        BiomeFinderQuery query = new BiomeFinderQuery(player.getLocation(), biome);
-        BiomeFinderQuery.Result result = BiomeFinderQueryCache.singleton().get(query);
+        LocateBiomeQuery query = new LocateBiomeQuery(player.getLocation(), biome);
+        LocateBiomeQuery.Result result = LocateBiomeCache.singleton().get(query);
 
         Optional<Location> location = result.getLocation(biome);
         if (location.isEmpty()) {
             if (!result.didBreakEarly()) return Optional.empty();
 
-            result = BiomeFinderQueryCache.singleton().fetch(query); // TODO: Continue from early break to improve performance
+            result = LocateBiomeCache.singleton().fetch(query); // TODO: Continue from early break to improve performance
             location = result.getLocation(biome);
         }
         return location;
@@ -60,7 +60,7 @@ public class PlayerBiomeFinder {
         return onCooldown;
     }
 
-    public static class Container extends HashSet<PlayerBiomeFinder> {
+    public static class Container extends HashSet<PlayerBiomeLocator> {
         private static Container singleton;
 
         public static Container singleton() {
@@ -73,11 +73,11 @@ public class PlayerBiomeFinder {
 
         }
 
-        public PlayerBiomeFinder get(Player player) {
-            Optional<PlayerBiomeFinder> optFinder = this.stream().filter(finder -> finder.player.equals(player)).findFirst();
+        public PlayerBiomeLocator get(Player player) {
+            Optional<PlayerBiomeLocator> optFinder = this.stream().filter(finder -> finder.player.equals(player)).findFirst();
 
             if (optFinder.isEmpty()) {
-                PlayerBiomeFinder newFinder = new PlayerBiomeFinder(player);
+                PlayerBiomeLocator newFinder = new PlayerBiomeLocator(player);
                 add(newFinder);
                 return newFinder;
             } else {
