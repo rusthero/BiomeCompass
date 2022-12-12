@@ -31,31 +31,43 @@ public class PlayerBiomeFinder implements BiomeFinder {
         return location;
     }
 
-    private boolean locked = false;
+    private boolean running = false;
+    private boolean onCooldown = false;
 
     @Override
     public void asyncLocateBiome(Biome biome, JavaPlugin plugin, LocateBiomeCallback callback) {
-        if (locked) {
-            callback.isLocked();
+        if (running) {
+            callback.onRunning();
 
             return;
         }
 
+        running = true;
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            locked = true;
             callback.onQueryDone(locateBiome(biome));
-            locked = false;
+            running = false;
         });
+
+        onCooldown = true;
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            onCooldown = false;
+        }, 100L);
     }
 
-    public boolean isLocked() {
-        return locked;
+    public boolean isRunning() {
+        return running;
+    }
+
+    public boolean isOnCooldown() {
+        return onCooldown;
     }
 
     public interface LocateBiomeCallback {
         void onQueryDone(Optional<Location> location);
 
-        void isLocked();
+        void onRunning();
+
+        void onCooldown();
     }
 
     public static class Container extends HashSet<PlayerBiomeFinder> {

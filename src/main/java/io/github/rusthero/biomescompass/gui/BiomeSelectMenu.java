@@ -173,8 +173,13 @@ public class BiomeSelectMenu implements Listener {
                     }
 
                     @Override
-                    public void isLocked() {
+                    public void onRunning() {
                         player.sendMessage("You are already searching a biome!");
+                    }
+
+                    @Override
+                    public void onCooldown() {
+                        player.sendMessage("Please wait, you are on cooldown!");
                     }
                 });
             }

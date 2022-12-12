@@ -52,8 +52,14 @@ public class BiomesCompassItem extends ItemStack {
 
             Player player = event.getPlayer();
             if (!player.hasPermission("biomescompass.use")) return;
-            if (PlayerBiomeFinder.Container.singleton().get(player).isLocked()) {
+
+            PlayerBiomeFinder finder = PlayerBiomeFinder.Container.singleton().get(player);
+            if (finder.isRunning()) {
                 player.sendMessage("Please wait, searching.");
+                return;
+            }
+            if (finder.isOnCooldown()) {
+                player.sendMessage("Please wait, you are on cooldown.");
                 return;
             }
 
