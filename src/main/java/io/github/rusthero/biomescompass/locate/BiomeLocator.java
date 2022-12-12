@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Optional;
 
 public class BiomeLocator {
-    final Player player;
+    public final Player player;
 
     BiomeLocator(Player player) {
         this.player = player;

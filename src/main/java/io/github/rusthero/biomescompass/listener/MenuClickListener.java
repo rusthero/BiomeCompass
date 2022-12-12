@@ -1,7 +1,7 @@
 package io.github.rusthero.biomescompass.listener;
 
 import io.github.rusthero.biomescompass.BiomesCompass;
-import io.github.rusthero.biomescompass.gui.LocateBiomeMenu;
+import io.github.rusthero.biomescompass.task.LocateBiomeTask;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,16 +11,14 @@ import org.bukkit.inventory.ItemStack;
 
 public class MenuClickListener implements Listener {
     private final BiomesCompass biomesCompass;
-    private final LocateBiomeMenu menu;
 
-    public MenuClickListener(final BiomesCompass biomesCompass, final LocateBiomeMenu menu) {
+    public MenuClickListener(final BiomesCompass biomesCompass) {
         this.biomesCompass = biomesCompass;
-        this.menu = menu;
     }
 
     @EventHandler
     private void onMenuClick(final InventoryClickEvent event) {
-        if (menu.contains(event.getClickedInventory())) return;
+        if (biomesCompass.getLocateBiomeMenu().contains(event.getClickedInventory())) return;
         event.setCancelled(true);
 
         final ItemStack clickedItem = event.getCurrentItem();
@@ -28,6 +26,6 @@ public class MenuClickListener implements Listener {
 
         final Player player = (Player) event.getWhoClicked();
         player.closeInventory();
-        menu.itemToBiome(clickedItem).ifPresent(biome -> biomesCompass.searchBiome(player, biome));
+        biomesCompass.getLocateBiomeMenu().itemToBiome(clickedItem).ifPresent(biome -> new LocateBiomeTask(player, biome, biomesCompass));
     }
 }

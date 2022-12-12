@@ -2,6 +2,7 @@ package io.github.rusthero.biomescompass.listener;
 
 import io.github.rusthero.biomescompass.BiomesCompass;
 import io.github.rusthero.biomescompass.item.BiomesCompassItem;
+import io.github.rusthero.biomescompass.task.OpenLocateBiomeMenuTask;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,6 +24,6 @@ public class ItemUseListener implements Listener {
         Player player = event.getPlayer();
         if (!player.hasPermission("biomescompass.use")) return;
 
-        biomesCompass.useItem(player);
+        new OpenLocateBiomeMenuTask(biomesCompass, player);
     }
 }
