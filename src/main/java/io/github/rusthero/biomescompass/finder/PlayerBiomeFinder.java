@@ -9,14 +9,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashSet;
 import java.util.Optional;
 
-public class PlayerBiomeFinder implements BiomeFinder {
+public class PlayerBiomeFinder {
     final Player player;
 
     PlayerBiomeFinder(Player player) {
         this.player = player;
     }
 
-    @Override
     public Optional<Location> locateBiome(Biome biome) {
         BiomeFinderQuery query = new BiomeFinderQuery(player.getLocation(), biome);
         BiomeFinderQuery.Result result = BiomeFinderQueryCache.singleton().get(query);
@@ -33,8 +32,7 @@ public class PlayerBiomeFinder implements BiomeFinder {
 
     private boolean running = false;
     private boolean onCooldown = false;
-
-    @Override
+    
     public void asyncLocateBiome(Biome biome, JavaPlugin plugin, LocateBiomeCallback callback) {
         if (running) {
             callback.onRunning();
