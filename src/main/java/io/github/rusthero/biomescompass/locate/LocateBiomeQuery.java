@@ -16,7 +16,7 @@ public class LocateBiomeQuery {
         this.target = target;
     }
 
-    public Result fetch() {
+    public LocateBiomeQueryResult fetch() {
         final HashMap<Biome, Location> biomeLocations = new HashMap<>();
         final int radius = 6400, resolution = 32;
 
@@ -50,7 +50,7 @@ public class LocateBiomeQuery {
             }
         }
 
-        return new Result(biomeLocations, earlyBreak);
+        return new LocateBiomeQueryResult(biomeLocations, earlyBreak);
     }
 
     @Override
@@ -64,23 +64,5 @@ public class LocateBiomeQuery {
     public int hashCode() {
         // Results of queries are going to be cached for 512x512 size divided areas
         return new Vector(Math.floor(origin.getX() / 512), 128, Math.floor(origin.getZ() / 512)).hashCode();
-    }
-
-    public static class Result {
-        private final HashMap<Biome, Location> biomeLocations;
-        private final boolean earlyBreak;
-
-        Result(HashMap<Biome, Location> biomeLocations, boolean earlyBreak) {
-            this.biomeLocations = biomeLocations;
-            this.earlyBreak = earlyBreak;
-        }
-
-        public Optional<Location> getLocation(Biome biome) {
-            return Optional.ofNullable(biomeLocations.get(biome));
-        }
-
-        public boolean didBreakEarly() {
-            return earlyBreak;
-        }
     }
 }

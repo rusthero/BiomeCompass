@@ -5,24 +5,23 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
 public class LocateBiomeCache {
-    final LoadingCache<LocateBiomeQuery, LocateBiomeQuery.Result> cache;
+    final LoadingCache<LocateBiomeQuery, LocateBiomeQueryResult> cache;
 
     public LocateBiomeCache() {
         cache = CacheBuilder.newBuilder().maximumSize(100).build(new CacheLoader<>() {
             @Override
-            public LocateBiomeQuery.Result load(LocateBiomeQuery query) throws Exception {
+            public LocateBiomeQueryResult load(LocateBiomeQuery query) {
                 return query.fetch();
             }
         });
     }
 
-    public LocateBiomeQuery.Result get(LocateBiomeQuery query) {
+    public LocateBiomeQueryResult get(LocateBiomeQuery query) {
         return cache.getUnchecked(query);
     }
 
-    public LocateBiomeQuery.Result fetch(LocateBiomeQuery query) {
+    public LocateBiomeQueryResult fetch(LocateBiomeQuery query) {
         cache.invalidate(query);
-
         return get(query);
     }
 }

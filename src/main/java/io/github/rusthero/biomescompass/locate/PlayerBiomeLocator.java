@@ -17,11 +17,11 @@ public class PlayerBiomeLocator {
 
     public Optional<Location> locateBiome(Biome biome, BiomesCompass biomesCompass) {
         LocateBiomeQuery query = new LocateBiomeQuery(player.getLocation(), biome);
-        LocateBiomeQuery.Result result = biomesCompass.getLocateBiomeCache().get(query);
+        LocateBiomeQueryResult result = biomesCompass.getLocateBiomeCache().get(query);
 
         Optional<Location> location = result.getLocation(biome);
         if (location.isEmpty()) {
-            if (!result.didBreakEarly()) return Optional.empty();
+            if (!result.isEarlyBreak()) return Optional.empty();
 
             result = biomesCompass.getLocateBiomeCache().fetch(query); // TODO: Continue from early break to improve performance
             location = result.getLocation(biome);
