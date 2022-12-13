@@ -1,6 +1,6 @@
 package io.github.rusthero.biomescompass;
 
-import io.github.rusthero.biomescompass.gui.LocateBiomeMenu;
+import io.github.rusthero.biomescompass.gui.BiomesMenu;
 import io.github.rusthero.biomescompass.items.BiomesCompassItem;
 import io.github.rusthero.biomescompass.listeners.ItemUseListener;
 import io.github.rusthero.biomescompass.listeners.MenuClickListener;
@@ -14,7 +14,7 @@ public class BiomesCompass extends JavaPlugin {
     private Settings settings;
     private LocateBiomeCache locateBiomeCache;
     private PlayerBiomeLocatorRegistry playerBiomeLocators;
-    private LocateBiomeMenu locateBiomeMenu;
+    private BiomesMenu biomesMenu;
 
     @Override
     public void onEnable() {
@@ -24,12 +24,12 @@ public class BiomesCompass extends JavaPlugin {
 
         locateBiomeCache = new LocateBiomeCache(this);
         playerBiomeLocators = new PlayerBiomeLocatorRegistry();
-        locateBiomeMenu = new LocateBiomeMenu();
+        biomesMenu = new BiomesMenu();
 
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new ItemUseListener(this), this);
         pluginManager.registerEvents(new MenuClickListener(this), this);
-        pluginManager.registerEvents(new MenuDragListener(locateBiomeMenu), this);
+        pluginManager.registerEvents(new MenuDragListener(biomesMenu), this);
 
         getServer().addRecipe(BiomesCompassItem.getRecipe(this));
 
@@ -53,7 +53,7 @@ public class BiomesCompass extends JavaPlugin {
         return playerBiomeLocators;
     }
 
-    public LocateBiomeMenu getLocateBiomeMenu() {
-        return locateBiomeMenu;
+    public BiomesMenu getLocateBiomeMenu() {
+        return biomesMenu;
     }
 }

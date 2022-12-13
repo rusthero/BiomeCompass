@@ -42,7 +42,7 @@ public class LocateBiomeQuery {
 
             Biome biome = origin.getWorld().getBiome(x, z);
             if (!biomeLocations.containsKey(biome))
-                biomeLocations.put(biome, new Location(origin.getWorld(), x, 128.0, z));
+                biomeLocations.put(biome, new Location(origin.getWorld(), x, 64.0, z));
 
             if (biome.equals(target)) {
                 earlyBreak = true;
@@ -63,6 +63,6 @@ public class LocateBiomeQuery {
     @Override
     public int hashCode() {
         // Results of queries are going to be cached for 512x512 size divided areas
-        return new Vector(Math.floor(origin.getX() / 512), 128, Math.floor(origin.getZ() / 512)).hashCode();
+        return new Vector(Math.floor(origin.getX() / 512), 64, Math.floor(origin.getZ() / 512)).hashCode();
     }
 }

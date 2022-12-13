@@ -1,33 +1,23 @@
 package io.github.rusthero.biomescompass.items;
 
+import io.github.rusthero.biomescompass.BiomesCompass;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.java.JavaPlugin;
 
-public class BiomesCompassItem extends ItemStack {
-    public BiomesCompassItem() {
-        super(Material.COMPASS, 1);
+import java.util.ArrayList;
+import java.util.function.Consumer;
 
-        ItemMeta meta = getItemMeta();
-        meta.setDisplayName(ChatColor.DARK_GREEN + "Biomes Compass");
-        setItemMeta(meta);
-    }
-
-    private boolean canCraft(CraftItemEvent event) {
-        if (!event.getRecipe().getResult().equals(new BiomesCompassItem())) return false;
-        if (!(event.getWhoClicked() instanceof Player player)) return false;
-
-        return !player.hasPermission("biomescompass.craft");
-    }
-
-    public static ShapedRecipe getRecipe(JavaPlugin plugin) {
-        ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(plugin, "biomes_compass"), new BiomesCompassItem());
+public class BiomesCompassItem {
+    public static ShapedRecipe getRecipe(BiomesCompass biomesCompass) {
+        ShapedRecipe recipe =
+                new ShapedRecipe(new NamespacedKey(biomesCompass, "biomes_compass"),
+                                 BiomesCompassItem.getDefault());
 
         recipe.shape("SLS", "LCL", "SLS");
 
@@ -38,11 +28,53 @@ public class BiomesCompassItem extends ItemStack {
         return recipe;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof ItemStack item)) return false;
-        if (!item.hasItemMeta()) return false;
+    private static ItemStack biomesCompassItem;
 
-        return (getType().equals(item.getType()) && getItemMeta().equals(item.getItemMeta()));
+    private static ItemStack getDefault() {
+        if (biomesCompassItem == null) {
+            biomesCompassItem = new ItemStack(Material.COMPASS, 1);
+
+            ItemMeta meta = biomesCompassItem.getItemMeta();
+            meta.setDisplayName(ChatColor.DARK_GREEN + "Biomes Compass");
+            biomesCompassItem.setItemMeta(meta);
+        }
+
+        return biomesCompassItem;
+    }
+
+    public static void ifInstance(ItemStack item, Consumer<BiomesCompassItem> consumer) {
+        if (!isInstance(item)) return;
+
+        consumer.accept(new BiomesCompassItem(item));
+    }
+
+    public static boolean isInstance(ItemStack item) {
+        if (!item.getType().equals(getDefault().getType())) return false;
+        if (!item.hasItemMeta() || item.getItemMeta() == null) return false;
+
+        return item.getItemMeta().getDisplayName().startsWith(getDefault().getItemMeta().getDisplayName());
+    }
+
+    final ItemStack item;
+
+    private BiomesCompassItem(ItemStack item) {
+        this.item = item;
+    }
+
+    public void bindLocation(String biomeName, Location location) {
+        CompassMeta meta = (CompassMeta) item.getItemMeta();
+
+        meta.setDisplayName(
+                ChatColor.DARK_GREEN + "Biomes Compass (" + biomeName + ChatColor.DARK_GREEN + ")");
+
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(ChatColor.DARK_PURPLE + "Location: " + location.getBlockX() + ", " + location.getBlockY() + ", " +
+                         location.getBlockZ());
+        meta.setLore(lore);
+
+        meta.setLodestoneTracked(false);
+        meta.setLodestone(location);
+
+        item.setItemMeta(meta);
     }
 }

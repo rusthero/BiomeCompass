@@ -5,6 +5,8 @@ plugins {
 group 'io.github.rusthero.biomescompass'
 version '1.0.0-SNAPSHOT'
 
+compileJava.options.encoding = "UTF-8"
+
 repositories {
     mavenCentral()
     maven {
@@ -16,6 +18,6 @@ repositories {
 }
 
 dependencies {
-    implementation "org.spigotmc:spigot-api:1.13-R0.1-SNAPSHOT"
+    implementation "org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT"
     implementation "com.google.guava:guava:31.1-jre"
 }

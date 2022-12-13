@@ -23,7 +23,7 @@ public class ItemUseListener implements Listener {
     @EventHandler
     private void onItemUse(final PlayerInteractEvent event) {
         if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) return;
-        if (event.getItem() == null || !new BiomesCompassItem().equals(event.getItem())) return;
+        if (event.getItem() == null || !BiomesCompassItem.isInstance(event.getItem())) return;
 
         Player player = event.getPlayer();
         if (!player.hasPermission("biomescompass.use")) return;

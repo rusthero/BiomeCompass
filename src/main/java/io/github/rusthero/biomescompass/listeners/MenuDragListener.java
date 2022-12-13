@@ -1,14 +1,14 @@
 package io.github.rusthero.biomescompass.listeners;
 
-import io.github.rusthero.biomescompass.gui.LocateBiomeMenu;
+import io.github.rusthero.biomescompass.gui.BiomesMenu;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryDragEvent;
 
 public class MenuDragListener implements Listener {
-    private final LocateBiomeMenu menu;
+    private final BiomesMenu menu;
 
-    public MenuDragListener(final LocateBiomeMenu menu) {
+    public MenuDragListener(final BiomesMenu menu) {
         this.menu = menu;
     }
 

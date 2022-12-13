@@ -3,7 +3,7 @@ version: 1.0.0
 description: Adds a special compass which can show you the way to your desired biomes.
 author: rusthero
 
-api-version: 1.13
+api-version: 1.16
 main: io.github.rusthero.biomescompass.BiomesCompass
 
 permissions:
