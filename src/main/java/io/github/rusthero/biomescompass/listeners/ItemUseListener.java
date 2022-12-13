@@ -1,7 +1,7 @@
-package io.github.rusthero.biomescompass.listener;
+package io.github.rusthero.biomescompass.listeners;
 
 import io.github.rusthero.biomescompass.BiomesCompass;
-import io.github.rusthero.biomescompass.item.BiomesCompassItem;
+import io.github.rusthero.biomescompass.items.BiomesCompassItem;
 import io.github.rusthero.biomescompass.locate.PlayerBiomeLocator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

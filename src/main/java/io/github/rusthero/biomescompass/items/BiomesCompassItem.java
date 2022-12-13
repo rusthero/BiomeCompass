@@ -1,4 +1,4 @@
-package io.github.rusthero.biomescompass.item;
+package io.github.rusthero.biomescompass.items;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

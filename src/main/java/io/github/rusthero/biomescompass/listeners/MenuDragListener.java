@@ -1,4 +1,4 @@
-package io.github.rusthero.biomescompass.listener;
+package io.github.rusthero.biomescompass.listeners;
 
 import io.github.rusthero.biomescompass.gui.LocateBiomeMenu;
 import org.bukkit.event.EventHandler;

@@ -1,10 +1,10 @@
 package io.github.rusthero.biomescompass;
 
 import io.github.rusthero.biomescompass.gui.LocateBiomeMenu;
-import io.github.rusthero.biomescompass.item.BiomesCompassItem;
-import io.github.rusthero.biomescompass.listener.ItemUseListener;
-import io.github.rusthero.biomescompass.listener.MenuClickListener;
-import io.github.rusthero.biomescompass.listener.MenuDragListener;
+import io.github.rusthero.biomescompass.items.BiomesCompassItem;
+import io.github.rusthero.biomescompass.listeners.ItemUseListener;
+import io.github.rusthero.biomescompass.listeners.MenuClickListener;
+import io.github.rusthero.biomescompass.listeners.MenuDragListener;
 import io.github.rusthero.biomescompass.locate.LocateBiomeCache;
 import io.github.rusthero.biomescompass.locate.PlayerBiomeLocatorRegistry;
 import org.bukkit.plugin.PluginManager;

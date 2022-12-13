@@ -1,4 +1,4 @@
-package io.github.rusthero.biomescompass.listener;
+package io.github.rusthero.biomescompass.listeners;
 
 import io.github.rusthero.biomescompass.BiomesCompass;
 import io.github.rusthero.biomescompass.locate.LocateBiomeCallback;
