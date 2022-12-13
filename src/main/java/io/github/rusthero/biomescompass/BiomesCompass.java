@@ -11,15 +11,18 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BiomesCompass extends JavaPlugin {
+    private Settings settings;
     private LocateBiomeCache locateBiomeCache;
     private PlayerBiomeLocatorRegistry playerBiomeLocators;
     private LocateBiomeMenu locateBiomeMenu;
 
     @Override
     public void onEnable() {
-        // TODO Configuration
+        getConfig().options().copyDefaults(true);
+        saveDefaultConfig();
+        settings = new Settings(getConfig());
 
-        locateBiomeCache = new LocateBiomeCache();
+        locateBiomeCache = new LocateBiomeCache(this);
         playerBiomeLocators = new PlayerBiomeLocatorRegistry();
         locateBiomeMenu = new LocateBiomeMenu();
 
@@ -36,6 +39,10 @@ public class BiomesCompass extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("BiomesCompass is disabled");
+    }
+
+    public Settings getSettings() {
+        return settings;
     }
 
     public LocateBiomeCache getLocateBiomeCache() {

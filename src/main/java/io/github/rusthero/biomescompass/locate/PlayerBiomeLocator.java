@@ -22,7 +22,6 @@ public class PlayerBiomeLocator {
         Optional<Location> location = result.getLocation(biome);
         if (location.isEmpty()) {
             if (!result.isEarlyBreak()) return Optional.empty();
-
             result = biomesCompass.getLocateBiomeCache().fetch(query); // TODO: Continue from early break to improve performance
             location = result.getLocation(biome);
         }
@@ -35,7 +34,6 @@ public class PlayerBiomeLocator {
     public void asyncLocateBiome(Biome biome, BiomesCompass biomesCompass, LocateBiomeCallback callback) {
         if (running || onCooldown) return;
 
-
         running = true;
         Bukkit.getScheduler().runTaskAsynchronously(biomesCompass, () -> {
             callback.onQueryDone(locateBiome(biome, biomesCompass));
@@ -43,7 +41,8 @@ public class PlayerBiomeLocator {
         });
 
         onCooldown = true;
-        Bukkit.getScheduler().runTaskLater(biomesCompass, () -> onCooldown = false, 100L);
+        if (biomesCompass.getSettings().cooldown > 0)
+            Bukkit.getScheduler().runTaskLater(biomesCompass, () -> onCooldown = false, biomesCompass.getSettings().cooldown * 20L);
     }
 
     public boolean isRunning() {
