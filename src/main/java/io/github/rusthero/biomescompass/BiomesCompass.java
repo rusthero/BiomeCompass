@@ -5,11 +5,13 @@ import io.github.rusthero.biomescompass.item.BiomesCompassItem;
 import io.github.rusthero.biomescompass.listener.ItemUseListener;
 import io.github.rusthero.biomescompass.listener.MenuClickListener;
 import io.github.rusthero.biomescompass.listener.MenuDragListener;
+import io.github.rusthero.biomescompass.locate.LocateBiomeCache;
 import io.github.rusthero.biomescompass.locate.PlayerBiomeLocatorRegistry;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BiomesCompass extends JavaPlugin {
+    private LocateBiomeCache locateBiomeCache;
     private PlayerBiomeLocatorRegistry playerBiomeLocators;
     private LocateBiomeMenu locateBiomeMenu;
 
@@ -17,6 +19,7 @@ public class BiomesCompass extends JavaPlugin {
     public void onEnable() {
         // TODO Configuration
 
+        locateBiomeCache = new LocateBiomeCache();
         playerBiomeLocators = new PlayerBiomeLocatorRegistry();
         locateBiomeMenu = new LocateBiomeMenu();
 
@@ -33,6 +36,10 @@ public class BiomesCompass extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("BiomesCompass is disabled");
+    }
+
+    public LocateBiomeCache getLocateBiomeCache() {
+        return locateBiomeCache;
     }
 
     public PlayerBiomeLocatorRegistry getPlayerBiomeLocators() {
