@@ -1,4 +1,4 @@
-package io.github.rusthero.biomescompass;
+package io.github.rusthero.biomecompass;
 
 import org.bukkit.configuration.file.FileConfiguration;
 

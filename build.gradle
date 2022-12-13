@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'io.github.rusthero.biomescompass'
+group 'io.github.rusthero.biomecompass'
 version '1.0.0-SNAPSHOT'
 
 compileJava.options.encoding = "UTF-8"

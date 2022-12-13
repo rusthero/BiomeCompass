@@ -1,19 +1,19 @@
-name: BiomesCompass
+name: BiomeCompass
 version: 1.0.0
-description: Adds a special compass which can show you the way to your desired biomes.
+description: Find biomes anywhere in any dimension!
 author: rusthero
 
 api-version: 1.16
-main: io.github.rusthero.biomescompass.BiomesCompass
+main: io.github.rusthero.biomecompass.BiomeCompass
 
 permissions:
-  biomescompass.*:
+  biomecompass.*:
     children:
-      biomescompass.craft: true
-      biomescompass.use: true
-  biomescompass.craft:
-    description: Allows crafting a new biomes compass.
+      biomecompass.craft: true
+      biomecompass.use: true
+  biomecompass.craft:
+    description: Allows crafting a new biome compass.
     default: true
-  biomescompass.use:
-    description: Allows switching biomes of a biomes compass by right clicking.
+  biomecompass.use:
+    description: Allows using the biome compass.
     default: true

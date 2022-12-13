@@ -1,18 +1,18 @@
-package io.github.rusthero.biomescompass.locate;
+package io.github.rusthero.biomecompass.locate;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import io.github.rusthero.biomescompass.BiomesCompass;
+import io.github.rusthero.biomecompass.BiomeCompass;
 
 public class LocateBiomeCache {
     final LoadingCache<LocateBiomeQuery, LocateBiomeQueryResult> cache;
 
-    public LocateBiomeCache(BiomesCompass biomesCompass) {
-        cache = CacheBuilder.newBuilder().maximumSize(biomesCompass.getSettings().cacheSize).build(new CacheLoader<>() {
+    public LocateBiomeCache(BiomeCompass biomeCompass) {
+        cache = CacheBuilder.newBuilder().maximumSize(biomeCompass.getSettings().cacheSize).build(new CacheLoader<>() {
             @Override
             public LocateBiomeQueryResult load(LocateBiomeQuery query) {
-                return query.fetch(biomesCompass);
+                return query.fetch(biomeCompass);
             }
         });
     }

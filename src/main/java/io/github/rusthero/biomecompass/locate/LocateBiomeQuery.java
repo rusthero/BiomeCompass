@@ -1,6 +1,6 @@
-package io.github.rusthero.biomescompass.locate;
+package io.github.rusthero.biomecompass.locate;
 
-import io.github.rusthero.biomescompass.BiomesCompass;
+import io.github.rusthero.biomecompass.BiomeCompass;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
 import org.bukkit.util.Vector;
@@ -16,9 +16,9 @@ public class LocateBiomeQuery {
         this.target = target;
     }
 
-    public LocateBiomeQueryResult fetch(BiomesCompass biomesCompass) {
+    public LocateBiomeQueryResult fetch(BiomeCompass biomeCompass) {
         final HashMap<Biome, Location> biomeLocations = new HashMap<>();
-        final int radius = biomesCompass.getSettings().radius, resolution = biomesCompass.getSettings().resolution;
+        final int radius = biomeCompass.getSettings().radius, resolution = biomeCompass.getSettings().resolution;
 
         int x = origin.getBlockX(), z = origin.getBlockZ();
         int dx = 32, dz = 0;

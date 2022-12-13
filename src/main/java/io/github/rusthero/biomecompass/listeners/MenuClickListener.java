@@ -1,8 +1,8 @@
-package io.github.rusthero.biomescompass.listeners;
+package io.github.rusthero.biomecompass.listeners;
 
-import io.github.rusthero.biomescompass.BiomesCompass;
-import io.github.rusthero.biomescompass.gui.BiomeElement;
-import io.github.rusthero.biomescompass.items.BiomesCompassItem;
+import io.github.rusthero.biomecompass.BiomeCompass;
+import io.github.rusthero.biomecompass.gui.BiomeElement;
+import io.github.rusthero.biomecompass.items.BiomeCompassItem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -17,16 +17,16 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class MenuClickListener implements Listener {
-    private final BiomesCompass biomesCompass;
+    private final BiomeCompass biomeCompass;
 
-    public MenuClickListener(final BiomesCompass biomesCompass) {
-        this.biomesCompass = biomesCompass;
+    public MenuClickListener(final BiomeCompass biomeCompass) {
+        this.biomeCompass = biomeCompass;
     }
 
     @EventHandler
     private void onMenuClick(final InventoryClickEvent event) {
         Inventory inventory = event.getClickedInventory();
-        if (inventory == null || !biomesCompass.getLocateBiomeMenu().contains(event.getClickedInventory())) return;
+        if (inventory == null || !biomeCompass.getBiomesMenu().contains(event.getClickedInventory())) return;
         event.setCancelled(true);
 
         final ItemStack clickedItem = event.getCurrentItem();
@@ -39,11 +39,11 @@ public class MenuClickListener implements Listener {
         player.playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE, 1.0f, 1.0f);
 
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
-        BiomesCompassItem.ifInstance(itemInHand, compass -> {
+        BiomeCompassItem.ifInstance(itemInHand, compass -> {
             try {
                 BiomeElement.getByItemStack(clickedItem)
-                        .ifPresent(element -> biomesCompass.getPlayerBiomeLocators().get(player)
-                                .asyncLocateBiome(Biome.valueOf(element.name()), biomesCompass,
+                        .ifPresent(element -> biomeCompass.getPlayerBiomeLocators().get(player)
+                                .asyncLocateBiome(Biome.valueOf(element.name()), biomeCompass,
                                                   optLocation -> optLocation.ifPresentOrElse(location -> {
                                                       player.spigot()
                                                               .sendMessage(ChatMessageType.ACTION_BAR,

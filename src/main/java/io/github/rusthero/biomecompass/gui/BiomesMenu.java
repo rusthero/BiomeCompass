@@ -1,4 +1,4 @@
-package io.github.rusthero.biomescompass.gui;
+package io.github.rusthero.biomecompass.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -20,8 +20,6 @@ public class BiomesMenu implements Listener {
         pages.put(World.Environment.NORMAL, overworldInv);
         pages.put(World.Environment.NETHER, netherInv);
         pages.put(World.Environment.THE_END, endInv);
-
-        Bukkit.broadcastMessage(Bukkit.getVersion().split("\\.")[1]);
 
         for (Biome biome : Biome.values()) {
             try {

@@ -1,16 +1,16 @@
-package io.github.rusthero.biomescompass;
+package io.github.rusthero.biomecompass;
 
-import io.github.rusthero.biomescompass.gui.BiomesMenu;
-import io.github.rusthero.biomescompass.items.BiomesCompassItem;
-import io.github.rusthero.biomescompass.listeners.ItemUseListener;
-import io.github.rusthero.biomescompass.listeners.MenuClickListener;
-import io.github.rusthero.biomescompass.listeners.MenuDragListener;
-import io.github.rusthero.biomescompass.locate.LocateBiomeCache;
-import io.github.rusthero.biomescompass.locate.PlayerBiomeLocatorRegistry;
+import io.github.rusthero.biomecompass.gui.BiomesMenu;
+import io.github.rusthero.biomecompass.items.BiomeCompassItem;
+import io.github.rusthero.biomecompass.listeners.ItemUseListener;
+import io.github.rusthero.biomecompass.listeners.MenuClickListener;
+import io.github.rusthero.biomecompass.listeners.MenuDragListener;
+import io.github.rusthero.biomecompass.locate.LocateBiomeCache;
+import io.github.rusthero.biomecompass.locate.PlayerBiomeLocatorRegistry;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class BiomesCompass extends JavaPlugin {
+public class BiomeCompass extends JavaPlugin {
     private Settings settings;
     private LocateBiomeCache locateBiomeCache;
     private PlayerBiomeLocatorRegistry playerBiomeLocators;
@@ -31,14 +31,14 @@ public class BiomesCompass extends JavaPlugin {
         pluginManager.registerEvents(new MenuClickListener(this), this);
         pluginManager.registerEvents(new MenuDragListener(biomesMenu), this);
 
-        getServer().addRecipe(BiomesCompassItem.getRecipe(this));
+        getServer().addRecipe(BiomeCompassItem.getRecipe(this));
 
-        getLogger().info("BiomesCompass is enabled");
+        getLogger().info("BiomeCompass is enabled");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("BiomesCompass is disabled");
+        getLogger().info("BiomeCompass is disabled");
     }
 
     public Settings getSettings() {
@@ -53,7 +53,7 @@ public class BiomesCompass extends JavaPlugin {
         return playerBiomeLocators;
     }
 
-    public BiomesMenu getLocateBiomeMenu() {
+    public BiomesMenu getBiomesMenu() {
         return biomesMenu;
     }
 }

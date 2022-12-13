@@ -1,6 +1,6 @@
-package io.github.rusthero.biomescompass.items;
+package io.github.rusthero.biomecompass.items;
 
-import io.github.rusthero.biomescompass.BiomesCompass;
+import io.github.rusthero.biomecompass.BiomeCompass;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,11 +13,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
-public class BiomesCompassItem {
-    public static ShapedRecipe getRecipe(BiomesCompass biomesCompass) {
+public class BiomeCompassItem {
+    public static ShapedRecipe getRecipe(BiomeCompass biomeCompass) {
         ShapedRecipe recipe =
-                new ShapedRecipe(new NamespacedKey(biomesCompass, "biomes_compass"),
-                                 BiomesCompassItem.getDefault());
+                new ShapedRecipe(new NamespacedKey(biomeCompass, "biome_compass"),
+                                 BiomeCompassItem.getDefault());
 
         recipe.shape("SLS", "LCL", "SLS");
 
@@ -28,24 +28,24 @@ public class BiomesCompassItem {
         return recipe;
     }
 
-    private static ItemStack biomesCompassItem;
+    private static ItemStack biomeCompassItem;
 
     private static ItemStack getDefault() {
-        if (biomesCompassItem == null) {
-            biomesCompassItem = new ItemStack(Material.COMPASS, 1);
+        if (biomeCompassItem == null) {
+            biomeCompassItem = new ItemStack(Material.COMPASS, 1);
 
-            ItemMeta meta = biomesCompassItem.getItemMeta();
-            meta.setDisplayName(ChatColor.DARK_GREEN + "Biomes Compass");
-            biomesCompassItem.setItemMeta(meta);
+            ItemMeta meta = biomeCompassItem.getItemMeta();
+            meta.setDisplayName(ChatColor.DARK_GREEN + "Biome Compass");
+            biomeCompassItem.setItemMeta(meta);
         }
 
-        return biomesCompassItem;
+        return biomeCompassItem;
     }
 
-    public static void ifInstance(ItemStack item, Consumer<BiomesCompassItem> consumer) {
+    public static void ifInstance(ItemStack item, Consumer<BiomeCompassItem> consumer) {
         if (!isInstance(item)) return;
 
-        consumer.accept(new BiomesCompassItem(item));
+        consumer.accept(new BiomeCompassItem(item));
     }
 
     public static boolean isInstance(ItemStack item) {
@@ -57,7 +57,7 @@ public class BiomesCompassItem {
 
     final ItemStack item;
 
-    private BiomesCompassItem(ItemStack item) {
+    private BiomeCompassItem(ItemStack item) {
         this.item = item;
     }
 
@@ -65,7 +65,7 @@ public class BiomesCompassItem {
         CompassMeta meta = (CompassMeta) item.getItemMeta();
 
         meta.setDisplayName(
-                ChatColor.DARK_GREEN + "Biomes Compass (" + biomeName + ChatColor.DARK_GREEN + ")");
+                ChatColor.DARK_GREEN + "Biome Compass (" + biomeName + ChatColor.DARK_GREEN + ")");
 
         ArrayList<String> lore = new ArrayList<>();
         lore.add(ChatColor.DARK_PURPLE + "Location: " + location.getBlockX() + ", " + location.getBlockY() + ", " +

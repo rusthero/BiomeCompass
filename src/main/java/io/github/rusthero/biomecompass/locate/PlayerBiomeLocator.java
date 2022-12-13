@@ -1,6 +1,6 @@
-package io.github.rusthero.biomescompass.locate;
+package io.github.rusthero.biomecompass.locate;
 
-import io.github.rusthero.biomescompass.BiomesCompass;
+import io.github.rusthero.biomecompass.BiomeCompass;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
@@ -15,14 +15,14 @@ public class PlayerBiomeLocator {
         this.player = player;
     }
 
-    public Optional<Location> locateBiome(Biome biome, BiomesCompass biomesCompass) {
+    public Optional<Location> locateBiome(Biome biome, BiomeCompass biomeCompass) {
         LocateBiomeQuery query = new LocateBiomeQuery(player.getLocation(), biome);
-        LocateBiomeQueryResult result = biomesCompass.getLocateBiomeCache().get(query);
+        LocateBiomeQueryResult result = biomeCompass.getLocateBiomeCache().get(query);
 
         Optional<Location> location = result.getLocation(biome);
         if (location.isEmpty()) {
             if (!result.isEarlyBreak()) return Optional.empty();
-            result = biomesCompass.getLocateBiomeCache()
+            result = biomeCompass.getLocateBiomeCache()
                     .fetch(query); // TODO: Continue from early break to improve performance
             location = result.getLocation(biome);
         }
@@ -32,20 +32,20 @@ public class PlayerBiomeLocator {
     private boolean running = false;
     private boolean onCooldown = false;
 
-    public void asyncLocateBiome(Biome biome, BiomesCompass biomesCompass, LocateBiomeCallback callback) {
+    public void asyncLocateBiome(Biome biome, BiomeCompass biomeCompass, LocateBiomeCallback callback) {
         if (running || onCooldown) return;
 
         running = true;
-        Bukkit.getScheduler().runTaskAsynchronously(biomesCompass, () -> {
-            callback.onQueryDone(locateBiome(biome, biomesCompass));
+        Bukkit.getScheduler().runTaskAsynchronously(biomeCompass, () -> {
+            callback.onQueryDone(locateBiome(biome, biomeCompass));
             running = false;
         });
 
 
-        if (biomesCompass.getSettings().cooldown > 0) {
+        if (biomeCompass.getSettings().cooldown > 0) {
             onCooldown = true;
             Bukkit.getScheduler()
-                    .runTaskLater(biomesCompass, () -> onCooldown = false, biomesCompass.getSettings().cooldown * 20L);
+                    .runTaskLater(biomeCompass, () -> onCooldown = false, biomeCompass.getSettings().cooldown * 20L);
         }
     }
 

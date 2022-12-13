@@ -1,4 +1,4 @@
-package io.github.rusthero.biomescompass.gui;
+package io.github.rusthero.biomecompass.gui;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
