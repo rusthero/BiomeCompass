@@ -3,6 +3,7 @@ package io.github.rusthero.biomescompass.listeners;
 import io.github.rusthero.biomescompass.BiomesCompass;
 import io.github.rusthero.biomescompass.items.BiomesCompassItem;
 import io.github.rusthero.biomescompass.locate.PlayerBiomeLocator;
+import io.github.rusthero.biomescompass.util.SoundPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,13 +27,16 @@ public class ItemUseListener implements Listener {
 
         PlayerBiomeLocator locator = biomesCompass.getPlayerBiomeLocators().get(player);
         if (locator.isRunning()) {
+            SoundPlayer.playRunningSound(player);
             player.sendMessage("Please wait, searching.");
             return;
         }
         if (locator.isOnCooldown()) {
+            SoundPlayer.playCooldownSound(player);
             player.sendMessage("Please wait, you are on cooldown.");
             return;
         }
+        SoundPlayer.playOpenMenuSound(player);
         biomesCompass.getLocateBiomeMenu().open(player);
     }
 }
