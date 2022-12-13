@@ -8,10 +8,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Optional;
 
-public class BiomeLocator {
+public class PlayerBiomeLocator {
     public final Player player;
 
-    BiomeLocator(Player player) {
+    PlayerBiomeLocator(Player player) {
         this.player = player;
     }
 

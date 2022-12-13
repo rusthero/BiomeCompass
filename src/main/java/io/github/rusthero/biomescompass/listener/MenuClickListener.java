@@ -32,7 +32,7 @@ public class MenuClickListener implements Listener {
         player.closeInventory();
 
         biomesCompass.getLocateBiomeMenu().itemToBiome(clickedItem).ifPresent(biome ->
-                biomesCompass.getBiomeLocators().get(player).asyncLocateBiome(biome, biomesCompass, new LocateBiomeCallback() {
+                biomesCompass.getPlayerBiomeLocators().get(player).asyncLocateBiome(biome, biomesCompass, new LocateBiomeCallback() {
                     @Override
                     public void onQueryDone(Optional<Location> optLocation) {
                         optLocation.ifPresentOrElse(location -> {
