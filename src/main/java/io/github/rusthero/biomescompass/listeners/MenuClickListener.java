@@ -2,9 +2,12 @@ package io.github.rusthero.biomescompass.listeners;
 
 import io.github.rusthero.biomescompass.BiomesCompass;
 import io.github.rusthero.biomescompass.locate.LocateBiomeCallback;
-import io.github.rusthero.biomescompass.util.SoundPlayer;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,34 +34,18 @@ public class MenuClickListener implements Listener {
         final Player player = (Player) event.getWhoClicked();
 
         player.closeInventory();
-        SoundPlayer.playStartLocatingSound(player);
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.YELLOW + "Locating"));
+        player.playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE, 1.0f, 1.0f);
 
         biomesCompass.getLocateBiomeMenu().itemToBiome(clickedItem).ifPresent(biome ->
-                biomesCompass.getPlayerBiomeLocators().get(player).asyncLocateBiome(biome, biomesCompass, new LocateBiomeCallback() {
-                    @Override
-                    public void onQueryDone(Optional<Location> optLocation) {
-                        optLocation.ifPresentOrElse(location -> {
-                            SoundPlayer.playLocatedSound(player);
-                            player.sendMessage("Closest biome you selected is at: " + location.toVector());
-                            player.setCompassTarget(location);
-                        }, () -> {
-                            SoundPlayer.playNotLocatedSound(player);
-                            player.sendMessage("Could not find the biome in max search area");
-                        });
-                    }
-
-                    @Override
-                    public void onRunning() {
-                        SoundPlayer.playRunningSound(player);
-                        player.sendMessage("You are already searching a biome!");
-                    }
-
-                    @Override
-                    public void onCooldown() {
-                        SoundPlayer.playCooldownSound(player);
-                        player.sendMessage("Please wait, you are on cooldown!");
-                    }
-                })
+                biomesCompass.getPlayerBiomeLocators().get(player).asyncLocateBiome(biome, biomesCompass, optLocation -> optLocation.ifPresentOrElse(location -> {
+                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "Located"));
+                    player.playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE, 1.0f, 1.0f);
+                    player.setCompassTarget(location);
+                }, () -> {
+                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Not found within search range"));
+                    player.playSound(player.getLocation(), Sound.BLOCK_CONDUIT_AMBIENT, 1.0f, 4.0f);
+                }))
         );
     }
 }

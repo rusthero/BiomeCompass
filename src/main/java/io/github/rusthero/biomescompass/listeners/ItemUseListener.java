@@ -3,7 +3,10 @@ package io.github.rusthero.biomescompass.listeners;
 import io.github.rusthero.biomescompass.BiomesCompass;
 import io.github.rusthero.biomescompass.items.BiomesCompassItem;
 import io.github.rusthero.biomescompass.locate.PlayerBiomeLocator;
-import io.github.rusthero.biomescompass.util.SoundPlayer;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,16 +30,17 @@ public class ItemUseListener implements Listener {
 
         PlayerBiomeLocator locator = biomesCompass.getPlayerBiomeLocators().get(player);
         if (locator.isRunning()) {
-            SoundPlayer.playRunningSound(player);
-            player.sendMessage("Please wait, searching.");
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.YELLOW + "Locating"));
+            player.playSound(player.getLocation(), Sound.BLOCK_CONDUIT_AMBIENT_SHORT, 1.0f, 1.0f);
             return;
         }
         if (locator.isOnCooldown()) {
-            SoundPlayer.playCooldownSound(player);
-            player.sendMessage("Please wait, you are on cooldown.");
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.BLUE + "Cooling Down"));
+            player.playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
             return;
         }
-        SoundPlayer.playOpenMenuSound(player);
+
+        player.playSound(player.getLocation(), Sound.BLOCK_ENDER_CHEST_OPEN, 1.0f, 4.0f);
         biomesCompass.getLocateBiomeMenu().open(player);
     }
 }
