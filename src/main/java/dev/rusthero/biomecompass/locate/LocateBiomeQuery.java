@@ -1,7 +1,9 @@
 package dev.rusthero.biomecompass.locate;
 
 import dev.rusthero.biomecompass.BiomeCompass;
+import dev.rusthero.biomecompass.gui.BiomeElement;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.util.Vector;
 
@@ -19,9 +21,10 @@ public class LocateBiomeQuery {
     public LocateBiomeQueryResult fetch(BiomeCompass biomeCompass) {
         final HashMap<Biome, Location> biomeLocations = new HashMap<>();
         final int radius = biomeCompass.getSettings().radius, resolution = biomeCompass.getSettings().resolution;
+        final World world = origin.getWorld();
 
         int x = origin.getBlockX(), z = origin.getBlockZ();
-        int dx = 32, dz = 0;
+        int dx = resolution, dz = 0;
         int segment_length = 1, segment_passed = 0;
 
         boolean earlyBreak = false;
@@ -40,13 +43,31 @@ public class LocateBiomeQuery {
                 if (dz == 0) ++segment_length;
             }
 
-            Biome biome = origin.getWorld().getBiome(x, z);
-            if (!biomeLocations.containsKey(biome))
-                biomeLocations.put(biome, new Location(origin.getWorld(), x, 64.0, z));
+            try {
+                Biome biome = world.getBiome(x, z);
+                BiomeElement element = BiomeElement.valueOf(biome.name());
 
-            if (biome.equals(target)) {
-                earlyBreak = true;
-                break;
+                if (!biomeLocations.containsKey(biome)) biomeLocations.put(biome, new Location(world, x, 128, z));
+
+                if (world.getEnvironment().equals(World.Environment.NORMAL)) {
+                    Biome earthBiome = biome;
+                    if (element.isUnderground) {
+                        earthBiome = world.getBiome(x, 128, z);
+                        if (!biomeLocations.containsKey(earthBiome))
+                            biomeLocations.put(earthBiome, new Location(world, x, 128, z));
+                    }
+
+                    Biome deepBiome = world.getBiome(x, -52, z);
+                    if (!biomeLocations.containsKey(deepBiome))
+                        biomeLocations.put(deepBiome, new Location(world, x, 128, z));
+
+                    if (biome.equals(target) || earthBiome.equals(target) || deepBiome.equals(target)) {
+                        earlyBreak = true;
+                        break;
+                    }
+                }
+            } catch (IllegalArgumentException ignored) {
+
             }
         }
 
@@ -63,6 +84,6 @@ public class LocateBiomeQuery {
     @Override
     public int hashCode() {
         // Results of queries are going to be cached for 512x512 size divided areas
-        return new Vector(Math.floor(origin.getX() / 512), 64, Math.floor(origin.getZ() / 512)).hashCode();
+        return new Vector(Math.floor(origin.getX() / 256), 64, Math.floor(origin.getZ() / 256)).hashCode();
     }
 }

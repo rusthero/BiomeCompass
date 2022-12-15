@@ -79,19 +79,19 @@ public enum BiomeElement {
     SMALL_END_ISLANDS(World.Environment.THE_END, false, "END_STONE", DARK_PURPLE),
     END_MIDLANDS(World.Environment.THE_END, false, "END_STONE_BRICKS", DARK_PURPLE),
     END_HIGHLANDS(World.Environment.THE_END, false, "CHORUS_PLANT", DARK_PURPLE),
-    END_BARRENS(World.Environment.THE_END, false, "END_STONE", DARK_PURPLE),
+    END_BARRENS(World.Environment.THE_END, false, "END_STONE", DARK_PURPLE);
 
-    THE_VOID(NORMAL, false, "STONE", BLACK);
+    // THE_VOID(NORMAL, false, "STONE", BLACK);
 
     public static Optional<BiomeElement> getByItemStack(ItemStack item) {
         return Arrays.stream(values()).filter(element -> element.item.equals(item)).findFirst();
     }
 
-    public final String name;
+    public final String displayName;
+    public final boolean isUnderground;
 
     final World.Environment environment;
     final ItemStack item;
-    final boolean isUnderground;
 
     BiomeElement(World.Environment environment, boolean isUnderground, String materialStr, ChatColor color) {
         this.environment = environment;
@@ -108,10 +108,10 @@ public enum BiomeElement {
 
         final ItemMeta meta = item.getItemMeta();
         assert meta != null;
-        name = color + Arrays.stream(this.name().split("_"))
+        displayName = color + Arrays.stream(this.name().split("_"))
                 .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
                 .collect(Collectors.joining(" "));
-        meta.setDisplayName(name);
+        meta.setDisplayName(displayName);
         item.setItemMeta(meta);
     }
 }

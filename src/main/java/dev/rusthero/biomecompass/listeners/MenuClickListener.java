@@ -53,7 +53,7 @@ public class MenuClickListener implements Listener {
                                                       player.playSound(player.getLocation(),
                                                                        Sound.BLOCK_CONDUIT_ACTIVATE,
                                                                        1.0f, 1.0f);
-                                                      compass.bindLocation(element.name, location);
+                                                      compass.bindLocation(element.displayName, location);
                                                   }, () -> {
                                                       player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
                                                                                   new TextComponent(ChatColor.RED +
