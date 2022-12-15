@@ -25,8 +25,7 @@ public class BiomesMenu implements Listener {
             try {
                 BiomeElement element = BiomeElement.valueOf(biome.name());
                 pages.get(element.environment).addItem(element.item);
-            } catch (Exception | Error e) {
-                Bukkit.broadcastMessage(biome.name());
+            } catch (IllegalArgumentException ignored) {
             }
         }
     }

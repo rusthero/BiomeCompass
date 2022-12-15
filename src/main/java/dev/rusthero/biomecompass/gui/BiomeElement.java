@@ -87,23 +87,31 @@ public enum BiomeElement {
         return Arrays.stream(values()).filter(element -> element.item.equals(item)).findFirst();
     }
 
-    public final String displayName;
+    public final String name;
 
     final World.Environment environment;
-    final boolean isUnderground;
     final ItemStack item;
+    final boolean isUnderground;
 
-    BiomeElement(final World.Environment environment, final boolean isUnderground, final String material,
-                 final ChatColor color) {
+    BiomeElement(World.Environment environment, boolean isUnderground, String materialStr, ChatColor color) {
         this.environment = environment;
         this.isUnderground = isUnderground;
-        item = new ItemStack(Material.valueOf(material.toUpperCase()), 1);
+
+        Material material;
+        try {
+            material = Material.valueOf(materialStr);
+        } catch (IllegalArgumentException exception) {
+            material = Material.END_GATEWAY;
+        }
+
+        item = new ItemStack(material, 1);
 
         final ItemMeta meta = item.getItemMeta();
-        displayName = color + Arrays.stream(this.name().split("_"))
+        assert meta != null;
+        name = color + Arrays.stream(this.name().split("_"))
                 .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
                 .collect(Collectors.joining(" "));
-        meta.setDisplayName(displayName);
+        meta.setDisplayName(name);
         item.setItemMeta(meta);
     }
 }

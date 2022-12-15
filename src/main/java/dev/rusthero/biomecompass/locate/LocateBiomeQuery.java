@@ -55,9 +55,9 @@ public class LocateBiomeQuery {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof LocateBiomeQuery query)) return false;
-        // Normally this is considered bad, but fine for cache purposes
-        return (obj.hashCode() == query.hashCode());
+        if (!(obj instanceof LocateBiomeQuery)) return false;
+        LocateBiomeQuery query = (LocateBiomeQuery) obj;
+        return (obj.hashCode() == query.hashCode()); // Normally this is considered bad, but fine for cache purposes
     }
 
     @Override
