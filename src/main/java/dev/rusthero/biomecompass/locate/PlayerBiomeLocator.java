@@ -1,6 +1,6 @@
-package io.github.rusthero.biomecompass.locate;
+package dev.rusthero.biomecompass.locate;
 
-import io.github.rusthero.biomecompass.BiomeCompass;
+import dev.rusthero.biomecompass.BiomeCompass;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;

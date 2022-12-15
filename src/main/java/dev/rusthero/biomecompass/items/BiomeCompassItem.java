@@ -1,6 +1,6 @@
-package io.github.rusthero.biomecompass.items;
+package dev.rusthero.biomecompass.items;
 
-import io.github.rusthero.biomecompass.BiomeCompass;
+import dev.rusthero.biomecompass.BiomeCompass;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;

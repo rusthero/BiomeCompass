@@ -1,8 +1,8 @@
-package io.github.rusthero.biomecompass.listeners;
+package dev.rusthero.biomecompass.listeners;
 
-import io.github.rusthero.biomecompass.BiomeCompass;
-import io.github.rusthero.biomecompass.gui.BiomeElement;
-import io.github.rusthero.biomecompass.items.BiomeCompassItem;
+import dev.rusthero.biomecompass.BiomeCompass;
+import dev.rusthero.biomecompass.gui.BiomeElement;
+import dev.rusthero.biomecompass.items.BiomeCompassItem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;

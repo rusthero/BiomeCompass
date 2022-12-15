@@ -1,6 +1,6 @@
-package io.github.rusthero.biomecompass.listeners;
+package dev.rusthero.biomecompass.listeners;
 
-import io.github.rusthero.biomecompass.gui.BiomesMenu;
+import dev.rusthero.biomecompass.gui.BiomesMenu;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryDragEvent;

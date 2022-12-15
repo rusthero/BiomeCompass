@@ -1,4 +1,4 @@
-package io.github.rusthero.biomecompass.gui;
+package dev.rusthero.biomecompass.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;

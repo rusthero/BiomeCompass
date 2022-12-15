@@ -1,9 +1,9 @@
-package io.github.rusthero.biomecompass.locate;
+package dev.rusthero.biomecompass.locate;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import io.github.rusthero.biomecompass.BiomeCompass;
+import dev.rusthero.biomecompass.BiomeCompass;
 
 public class LocateBiomeCache {
     final LoadingCache<LocateBiomeQuery, LocateBiomeQueryResult> cache;

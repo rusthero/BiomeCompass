@@ -4,7 +4,7 @@ description: Find biomes anywhere in any dimension!
 author: rusthero
 
 api-version: 1.16
-main: io.github.rusthero.biomecompass.BiomeCompass
+main: dev.rusthero.biomecompass.BiomeCompass
 
 permissions:
   biomecompass.*:
