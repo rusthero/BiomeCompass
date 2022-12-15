@@ -1,10 +1,11 @@
 package dev.rusthero.biomecompass;
 
 import dev.rusthero.biomecompass.gui.BiomesMenu;
+import dev.rusthero.biomecompass.items.BiomeCompassItem;
 import dev.rusthero.biomecompass.listeners.ItemUseListener;
 import dev.rusthero.biomecompass.listeners.MenuClickListener;
 import dev.rusthero.biomecompass.listeners.MenuDragListener;
-import dev.rusthero.biomecompass.items.BiomeCompassItem;
+import dev.rusthero.biomecompass.listeners.PrepareCraftListener;
 import dev.rusthero.biomecompass.locate.LocateBiomeCache;
 import dev.rusthero.biomecompass.locate.PlayerBiomeLocatorRegistry;
 import org.bukkit.plugin.PluginManager;
@@ -30,6 +31,7 @@ public class BiomeCompass extends JavaPlugin {
         pluginManager.registerEvents(new ItemUseListener(this), this);
         pluginManager.registerEvents(new MenuClickListener(this), this);
         pluginManager.registerEvents(new MenuDragListener(biomesMenu), this);
+        pluginManager.registerEvents(new PrepareCraftListener(), this);
 
         getServer().addRecipe(BiomeCompassItem.getRecipe(this));
 

@@ -33,6 +33,7 @@ public class MenuClickListener implements Listener {
         if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
 
         final Player player = (Player) event.getWhoClicked();
+        if (!player.hasPermission("biomecompass.use")) return;
 
         player.closeInventory();
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.YELLOW + "Locating"));
