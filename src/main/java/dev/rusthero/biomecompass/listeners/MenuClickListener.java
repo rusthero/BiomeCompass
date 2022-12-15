@@ -6,6 +6,7 @@ import dev.rusthero.biomecompass.items.BiomeCompassItem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Biome;
@@ -44,28 +45,43 @@ public class MenuClickListener implements Listener {
             try {
                 BiomeElement.getByItemStack(clickedItem)
                         .ifPresent(element -> biomeCompass.getPlayerBiomeLocators().get(player)
-                                .asyncLocateBiome(Biome.valueOf(element.name()), biomeCompass,
-                                                  optLocation -> optLocation.ifPresentOrElse(location -> {
-                                                      player.spigot()
-                                                              .sendMessage(ChatMessageType.ACTION_BAR,
-                                                                           new TextComponent(
-                                                                                   ChatColor.GREEN + "Located"));
-                                                      player.playSound(player.getLocation(),
-                                                                       Sound.BLOCK_CONDUIT_ACTIVATE,
-                                                                       1.0f, 1.0f);
-                                                      compass.bindLocation(element.displayName, location);
-                                                  }, () -> {
-                                                      player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                                                                                  new TextComponent(ChatColor.RED +
-                                                                                                            "Not " +
-                                                                                                            "found " +
-                                                                                                            "within " +
-                                                                                                            "search " +
-                                                                                                            "range"));
-                                                      player.playSound(player.getLocation(),
-                                                                       Sound.BLOCK_CONDUIT_AMBIENT,
-                                                                       1.0f, 4.0f);
-                                                  })));
+                                .asyncLocateBiome(Biome.valueOf(element.name()), biomeCompass, optLocation -> {
+                                    optLocation.ifPresentOrElse(location -> {
+                                        if (!player.getInventory().contains(itemInHand)) {
+                                            player.spigot()
+                                                    .sendMessage(ChatMessageType.ACTION_BAR,
+                                                                 new TextComponent(
+                                                                         ChatColor.RED + "Hold the " +
+                                                                                 "compass"));
+                                            player.playSound(player.getLocation(),
+                                                             Sound.BLOCK_CONDUIT_AMBIENT,
+                                                             1.0f, 4.0f);
+                                            return;
+                                        }
+
+                                        player.spigot()
+                                                .sendMessage(ChatMessageType.ACTION_BAR,
+                                                             new TextComponent(
+                                                                     ChatColor.GREEN + "Located"));
+                                        player.playSound(player.getLocation(),
+                                                         Sound.BLOCK_CONDUIT_ACTIVATE,
+                                                         1.0f, 1.0f);
+
+                                        Bukkit.getScheduler().runTaskLater(biomeCompass, () ->
+                                                compass.bindLocation(element.displayName, location), 1L);
+                                    }, () -> {
+                                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
+                                                                    new TextComponent(ChatColor.RED +
+                                                                                              "Not " +
+                                                                                              "found " +
+                                                                                              "within " +
+                                                                                              "search " +
+                                                                                              "range"));
+                                        player.playSound(player.getLocation(),
+                                                         Sound.BLOCK_CONDUIT_AMBIENT,
+                                                         1.0f, 4.0f);
+                                    });
+                                }));
             } catch (
                     IllegalArgumentException exception) {
                 player.spigot()
