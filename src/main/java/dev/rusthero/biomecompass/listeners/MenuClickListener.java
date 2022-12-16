@@ -4,7 +4,6 @@ import dev.rusthero.biomecompass.BiomeCompass;
 import dev.rusthero.biomecompass.BiomeElement;
 import dev.rusthero.biomecompass.items.BiomeCompassItem;
 import dev.rusthero.biomecompass.locate.PlayerBiomeLocator;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -78,14 +77,14 @@ public class MenuClickListener implements Listener {
             try {
                 target = Biome.valueOf(element.get().name());
             } catch (IllegalArgumentException ignored) {
-                player.spigot().sendMessage(ACTION_BAR, new TextComponent(ChatColor.BLACK + "Unknown biome"));
+                player.spigot().sendMessage(ACTION_BAR, new TextComponent("§0Unknown biome"));
                 return;
             }
 
             PlayerBiomeLocator locator = plugin.getPlayerBiomeLocators().get(player);
             locator.asyncLocateBiome(target, plugin, location -> {
                 if (location.isEmpty()) {
-                    player.spigot().sendMessage(ACTION_BAR, new TextComponent("§Not found within search range"));
+                    player.spigot().sendMessage(ACTION_BAR, new TextComponent("§cNot found within search range"));
                     player.playSound(player.getLocation(), BLOCK_CONDUIT_AMBIENT, 1.0f, 4.0f);
                     return;
                 }

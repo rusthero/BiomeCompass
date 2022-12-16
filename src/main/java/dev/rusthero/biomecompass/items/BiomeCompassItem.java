@@ -66,7 +66,7 @@ public class BiomeCompassItem {
         recipe.setIngredient('B', SNOWBALL);
         recipe.setIngredient('D', DIRT);
         recipe.setIngredient('C', COMPASS);
-        recipe.setIngredient('S', SAND);
+        recipe.setIngredient('S', STONE);
         recipe.setIngredient('P', POPPY);
         recipe.setIngredient('N', NETHERRACK);
         recipe.setIngredient('L', LAVA_BUCKET);

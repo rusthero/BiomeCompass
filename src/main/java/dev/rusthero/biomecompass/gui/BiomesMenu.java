@@ -30,7 +30,7 @@ public class BiomesMenu {
     public BiomesMenu() {
         inventories = new HashMap<>();
 
-        Inventory overworld = Bukkit.createInventory(null, 54, "§2§l[§1O§lOVERWORLD§2§l] §9Select a biome");
+        Inventory overworld = Bukkit.createInventory(null, 54, "§2§l[§1§lOVERWORLD§2§l] §9Select a biome");
         inventories.put(Environment.NORMAL, overworld);
 
         Inventory nether = Bukkit.createInventory(null, 9, "§4§l[§6§lNETHER§4§l] §cSelect a biome");

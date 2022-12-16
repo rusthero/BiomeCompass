@@ -121,7 +121,7 @@ public class PlayerBiomeLocator {
         Location location = player.getLocation();
         World world = location.getWorld();
         if (world == null) return;
-        plugin.getLogger().info(format("Player %s requested to locate biome %s at location %d, %d, %d in world %s",
+        plugin.getLogger().info(format("%s requested to locate biome %s at location %d, %d, %d in %s",
                                        player.getName(),
                                        biome.name(),
                                        location.getBlockX(),
@@ -138,9 +138,9 @@ public class PlayerBiomeLocator {
 
         // We do not want to bother with the cooldown flag if the duration is smaller than or equal to 0 seconds.
         // Start the cooldown timer from the moment this method is called
-        onCooldown = true;
         final long cooldown = plugin.getSettings().cooldown * 20L;
         if (cooldown > 0) {
+            onCooldown = true;
             Bukkit.getScheduler().runTaskLater(plugin, () -> onCooldown = false, cooldown);
         }
     }
