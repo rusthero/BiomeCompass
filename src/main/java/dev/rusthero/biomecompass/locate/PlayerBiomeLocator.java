@@ -3,10 +3,13 @@ package dev.rusthero.biomecompass.locate;
 import dev.rusthero.biomecompass.BiomeCompass;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
+
+import static java.lang.String.format;
 
 /**
  * Represents a player who is performing biome location queries. This class provides a higher-level interface for
@@ -115,13 +118,23 @@ public class PlayerBiomeLocator {
         // We do not want to create multiple queries, and the cooldown period is useful for performance.
         if (running || onCooldown) return;
 
+        Location location = player.getLocation();
+        World world = location.getWorld();
+        if (world == null) return;
+        plugin.getLogger().info(format("Player %s requested to locate biome %s at location %d, %d, %d in world %s",
+                                       player.getName(),
+                                       biome.name(),
+                                       location.getBlockX(),
+                                       location.getBlockY(),
+                                       location.getBlockZ(),
+                                       world.getName()));
+
         // Use the synchronous locateBiome method inside an asynchronous task and return the nearest target biome found.
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             running = true;
             callback.onQueryDone(locateBiome(biome, plugin.getLocateBiomeCache()));
             running = false;
         });
-
 
         // We do not want to bother with the cooldown flag if the duration is smaller than or equal to 0 seconds.
         // Start the cooldown timer from the moment this method is called
