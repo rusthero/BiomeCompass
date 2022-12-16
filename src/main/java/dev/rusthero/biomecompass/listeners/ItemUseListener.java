@@ -3,44 +3,63 @@ package dev.rusthero.biomecompass.listeners;
 import dev.rusthero.biomecompass.BiomeCompass;
 import dev.rusthero.biomecompass.items.BiomeCompassItem;
 import dev.rusthero.biomecompass.locate.PlayerBiomeLocator;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Sound;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class ItemUseListener implements Listener {
-    private final BiomeCompass biomeCompass;
+import static net.md_5.bungee.api.ChatMessageType.ACTION_BAR;
+import static org.bukkit.Sound.*;
 
-    public ItemUseListener(final BiomeCompass biomeCompass) {
-        this.biomeCompass = biomeCompass;
+/**
+ * Represents a listener to handle using biome compass. Users need to have permission "biomecompass.use" to use.
+ */
+public class ItemUseListener implements Listener {
+    /**
+     * Instance of the Biome Compass plugin.
+     */
+    private final BiomeCompass plugin;
+
+    /**
+     * Constructor for the ItemUseListener.
+     *
+     * @param plugin Instance of the Biome Compass plugin.
+     */
+    public ItemUseListener(BiomeCompass plugin) {
+        this.plugin = plugin;
     }
 
+    /**
+     * Handles the PlayerInteractEvent and checks if the player is using a Biome Compass. If so, opens the biomes
+     * menu if the player has the necessary permission and the compass is not on cooldown or already locating a biome.
+     *
+     * @param event PlayerInteractEvent to handle.
+     */
     @EventHandler
-    private void onItemUse(final PlayerInteractEvent event) {
+    private void onItemUse(PlayerInteractEvent event) {
         if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) return;
         if (event.getItem() == null || !BiomeCompassItem.isInstance(event.getItem())) return;
 
         Player player = event.getPlayer();
+        Location location = player.getLocation();
         if (!player.hasPermission("biomecompass.use")) return;
 
-        PlayerBiomeLocator locator = biomeCompass.getPlayerBiomeLocators().get(player);
+        PlayerBiomeLocator locator = plugin.getPlayerBiomeLocators().get(player);
         if (locator.isRunning()) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.YELLOW + "Locating"));
-            player.playSound(player.getLocation(), Sound.BLOCK_CONDUIT_AMBIENT_SHORT, 1.0f, 1.0f);
+            player.spigot().sendMessage(ACTION_BAR, new TextComponent("§eLocating"));
+            player.playSound(location, BLOCK_CONDUIT_AMBIENT_SHORT, 1.0f, 1.0f);
             return;
         }
         if (locator.isOnCooldown()) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.BLUE + "Cooling Down"));
-            player.playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
+            player.spigot().sendMessage(ACTION_BAR, new TextComponent("§9Cooling Down"));
+            player.playSound(location, BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
             return;
         }
 
-        player.playSound(player.getLocation(), Sound.BLOCK_ENDER_CHEST_OPEN, 1.0f, 4.0f);
-        biomeCompass.getBiomesMenu().open(player);
+        player.playSound(location, BLOCK_ENDER_CHEST_OPEN, 1.0f, 4.0f);
+        plugin.getBiomesMenu().open(player);
     }
 }

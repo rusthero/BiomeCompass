@@ -4,5 +4,5 @@
 cooldown: 5
 resolution: 32
 radius: 6400
-cacheSize: 100
+cache_size: 100
 
