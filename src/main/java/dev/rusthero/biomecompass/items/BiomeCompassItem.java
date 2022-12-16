@@ -15,15 +15,22 @@ import java.util.function.Consumer;
 
 public class BiomeCompassItem {
     public static ShapedRecipe getRecipe(BiomeCompass biomeCompass) {
-        ShapedRecipe recipe =
-                new ShapedRecipe(new NamespacedKey(biomeCompass, "biome_compass"),
-                                 BiomeCompassItem.getDefault());
+        NamespacedKey key = new NamespacedKey(biomeCompass, "biome_compass");
+        ShapedRecipe recipe = new ShapedRecipe(key, BiomeCompassItem.getDefault());
 
-        recipe.shape("SLS", "LCL", "SLS");
+        recipe.shape("WEB", "DCS", "PNL");
 
-        recipe.setIngredient('S', Material.OAK_SAPLING);
-        recipe.setIngredient('L', Material.OAK_LOG);
+        recipe.setIngredient('W', Material.WATER_BUCKET);
+        recipe.setIngredient('E', Material.END_STONE);
+        recipe.setIngredient('B', Material.SNOWBALL);
+
+        recipe.setIngredient('D', Material.DIRT);
         recipe.setIngredient('C', Material.COMPASS);
+        recipe.setIngredient('S', Material.SAND);
+
+        recipe.setIngredient('P', Material.POPPY);
+        recipe.setIngredient('N', Material.NETHERRACK);
+        recipe.setIngredient('L', Material.LAVA_BUCKET);
 
         return recipe;
     }
