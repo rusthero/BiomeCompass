@@ -68,7 +68,7 @@ public class MenuClickListener implements Listener {
                                                          1.0f, 1.0f);
 
                                         Bukkit.getScheduler().runTaskLater(biomeCompass, () ->
-                                                compass.bindLocation(element.displayName, location), 1L);
+                                                compass.bindLocation(element.displayName, location), 3L);
                                     }, () -> {
                                         player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
                                                                     new TextComponent(ChatColor.RED +
