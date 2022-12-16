@@ -4,7 +4,6 @@ import dev.rusthero.biomecompass.BiomeElement;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 
@@ -178,7 +177,8 @@ public class LocateBiomeQuery {
     public int hashCode() {
         // The hash code is calculated based on the coordinates of the origin location, rounded down to the nearest
         // multiple of 256. The y coordinate is not used in the calculation because it does not matter for the
-        // purposes of caching the results of the query.
-        return new Vector(Math.floor(origin.getX() / 256), 64, Math.floor(origin.getZ() / 256)).hashCode();
+        // purposes of caching the results of the query. World is important to avoid collision in different dimensions.
+        World world = origin.getWorld();
+        return new Location(world, Math.floor(origin.getX() / 256), 64, Math.floor(origin.getZ() / 256)).hashCode();
     }
 }
