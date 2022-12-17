@@ -1,5 +1,5 @@
 name: BiomeCompass
-version: 1.0.0
+version: ${version}
 description: Find biomes anywhere in any dimension!
 author: rusthero
 website: https://github.com/rusthero/BiomeCompass
