@@ -12,7 +12,7 @@
     <a href="https://www.codefactor.io/repository/github/rusthero/biomecompass">
         <img src="https://www.codefactor.io/repository/github/rusthero/biomecompass/badge" alt="CodeFactor"/>
     </a>
-    <a href="https://discord.gg/5z6cqzQGjS">
+    <a href="https://discord.gg/5C6JgvmwUe">
         <img src="https://img.shields.io/discord/1051165269709557813.svg?style=flat&color=7289DA&logo=Discord" alt="Discord"/>
     </a>
 </p>
