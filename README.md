@@ -50,7 +50,7 @@ For more information about the Biome Compass plugin, including usage guide, conf
 The wiki includes detailed instructions and examples to help you use the Biome Compass, as well as answers to frequently asked questions.
 
 ## Contributing
-Contributions are welcome! Please see [CONTRIBUTING.md](https://github.com/rusthero/BiomeCompass/blob/main/CONTRIBUTING.md). You can also join the [Discord](https://discord.gg/5z6cqzQGjS) to discuss the project and ask questions.
+Contributions are welcome! Please see [CONTRIBUTING.md](https://github.com/rusthero/BiomeCompass/blob/main/CONTRIBUTING.md). You can also join the [Discord](https://discord.gg/5C6JgvmwUe) to discuss the project and ask questions.
 
 ## License
 GNU General Public License ([v3.0](https://www.gnu.org/licenses/gpl.txt))
