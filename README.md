@@ -4,7 +4,7 @@
     </a>
     <br>
     <a href="https://github.com/rusthero/BiomeCompass/releases">
-        <img src="https://img.shields.io/github/v/release/rusthero/BiomeCompass?style=flat&labelColor=1C2C2E&color=D0A384&logo=GitHub&logoColor=white">
+        <img src="https://img.shields.io/github/release/rusthero/BiomeCompass?style=flat&labelColor=1C2C2E&color=D0A384&logo=GitHub&logoColor=white">
     </a>
     <a href="https://github.com/rusthero/BiomeCompass/actions?query=workflow%3A%22Java CI%22">
         <img src="https://img.shields.io/github/actions/workflow/status/rusthero/BiomeCompass/build.yml?branch=main&style=flat&labelColor=1C2C2E&color=BEC5C9&logo=GitHub%20Actions&logoColor=BEC5C9"/>
