@@ -13,6 +13,10 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+
+import static java.lang.String.format;
+
 /**
  * This class represents the BiomeCompass plugin. It prepares the configuration, settings, cache for locate queries,
  * biome locators, biomes menu, listeners, and craft recipe.
@@ -50,6 +54,18 @@ public class BiomeCompass extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // Check if the plugin is outdated and log a warning message if it is.
+        try {
+            VersionTracker versionTracker = new VersionTracker(this);
+            if (!versionTracker.isUpToDate()) {
+                String outdatedMessage = "I am outdated! The latest version is %s." +
+                        "Please update to ensure compatibility and access to new features";
+                getLogger().warning(format(outdatedMessage, versionTracker.latestVersion));
+            }
+        } catch (IOException ignored) {
+            getLogger().warning("Version tracker could not check for the latest version");
+        }
+
         // Prepare the configuration and settings for easier access to constants.
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
@@ -60,7 +76,7 @@ public class BiomeCompass extends JavaPlugin {
         // Create the player biome locators registry to track player cooldowns and active queries.
         playerBiomeLocators = new PlayerBiomeLocatorRegistry();
         // Create the biomes menu, which will be used by players to select a biome and initiate a search.
-        biomesMenu = new BiomesMenu();
+        biomesMenu = new BiomesMenu(settings.biomes);
 
         // Register the listeners required for the plugin to function properly.
         PluginManager pluginManager = getServer().getPluginManager();
