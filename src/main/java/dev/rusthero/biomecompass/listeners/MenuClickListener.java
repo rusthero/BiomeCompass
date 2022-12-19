@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
 
+import static java.lang.String.format;
 import static net.md_5.bungee.api.ChatMessageType.ACTION_BAR;
 import static org.bukkit.Sound.BLOCK_CONDUIT_ACTIVATE;
 import static org.bukkit.Sound.BLOCK_CONDUIT_AMBIENT;
@@ -96,7 +97,13 @@ public class MenuClickListener implements Listener {
                     return;
                 }
 
-                player.spigot().sendMessage(ACTION_BAR, new TextComponent("§aLocated"));
+                String locatedMessage = "§aLocated";
+                // If player teleports to another dimension while locating, we cannot calculate distance.
+                if (player.getWorld().equals(location.get().getWorld())) {
+                    int distance = (int) Math.round(player.getLocation().distance(location.get()));
+                    locatedMessage += format(" (§e%d blocks away§a)", distance);
+                }
+                player.spigot().sendMessage(ACTION_BAR, new TextComponent(locatedMessage));
                 player.playSound(player.getLocation(), BLOCK_CONDUIT_ACTIVATE, 1.0f, 1.0f);
 
                 String biomeName = element.get().displayName;
