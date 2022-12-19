@@ -13,6 +13,10 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+
+import static java.lang.String.format;
+
 /**
  * This class represents the BiomeCompass plugin. It prepares the configuration, settings, cache for locate queries,
  * biome locators, biomes menu, listeners, and craft recipe.
@@ -50,6 +54,17 @@ public class BiomeCompass extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // Check if the plugin is outdated and log a warning message if not.
+        try {
+            VersionTracker versionTracker = new VersionTracker(this);
+            if (!versionTracker.isUpToDate())
+                getLogger().warning(format("I am outdated! The latest version is %s, Please update to ensure " +
+                                                   "compatibility and access to new features",
+                                           versionTracker.latestVersion));
+        } catch (IOException e) {
+            getLogger().warning("Could not check for the latest version.");
+        }
+
         // Prepare the configuration and settings for easier access to constants.
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
