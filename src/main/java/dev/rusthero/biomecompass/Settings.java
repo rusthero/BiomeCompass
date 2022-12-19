@@ -1,6 +1,10 @@
 package dev.rusthero.biomecompass;
 
+import org.bukkit.block.Biome;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+
+import java.util.HashMap;
 
 /**
  * This class represents the settings read from the configuration file of the plugin.
@@ -37,6 +41,8 @@ public final class Settings {
      */
     public final int cacheSize;
 
+    public final HashMap<Biome, Boolean> biomes;
+
     /**
      * Constructs a new Settings instance and reads in the setting values from the specified configuration file.
      *
@@ -47,5 +53,16 @@ public final class Settings {
         this.resolution = config.getInt("resolution");
         this.radius = config.getInt("radius");
         this.cacheSize = config.getInt("cache_size");
+
+        biomes = new HashMap<>();
+        ConfigurationSection section = config.getConfigurationSection("biomes");
+        if (section != null)
+            section.getKeys(true).forEach(biomeStr -> {
+                try {
+                    biomes.put(Biome.valueOf(biomeStr.toUpperCase()), section.getBoolean(biomeStr));
+                } catch (IllegalArgumentException ignored) {
+
+                }
+            });
     }
 }

@@ -1,13 +1,15 @@
 package dev.rusthero.biomecompass.gui;
 
 import dev.rusthero.biomecompass.BiomeElement;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Biome;
-import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
 
+import static net.md_5.bungee.api.ChatMessageType.ACTION_BAR;
 import static org.bukkit.World.Environment;
 
 /**
@@ -27,7 +29,7 @@ public class BiomesMenu {
      * This constructor creates three inventories for selecting biomes in different dimensions. It also adds every
      * BiomeElement to their corresponding inventories according to their dimensions.
      */
-    public BiomesMenu() {
+    public BiomesMenu(HashMap<Biome, Boolean> biomes) {
         inventories = new HashMap<>();
 
         Inventory overworld = Bukkit.createInventory(null, 54, "§2§l[§1§lOVERWORLD§2§l] §9Select a biome");
@@ -42,6 +44,9 @@ public class BiomesMenu {
         // Add every BiomeElement to their corresponding inventories based on their dimensions.
         for (Biome biome : Biome.values())
             try {
+                // Skip biomes which are set false in configuration
+                if (biomes.get(biome) != null && !biomes.get(biome)) continue;
+
                 BiomeElement element = BiomeElement.valueOf(biome.name());
                 Inventory inventory = inventories.get(element.environment);
                 inventory.addItem(element.item);
@@ -57,10 +62,15 @@ public class BiomesMenu {
      *
      * @param player The player who will open the menu.
      */
-    public void open(HumanEntity player) {
+    public void open(Player player) {
         Environment environment = player.getWorld().getEnvironment();
-        Inventory page = inventories.get(environment);
-        player.openInventory(page);
+        Inventory inventory = inventories.get(environment);
+
+        // If no biomes are added to the inventory, no need to show an empty menu
+        if (inventory.firstEmpty() == 0)
+            player.spigot().sendMessage(ACTION_BAR, new TextComponent("§cNot allowed in this dimension"));
+        else
+            player.openInventory(inventory);
     }
 
     /**
