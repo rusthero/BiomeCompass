@@ -97,8 +97,12 @@ public class MenuClickListener implements Listener {
                     return;
                 }
 
-                int distance = (int) Math.round(player.getLocation().distance(location.get()));
-                String locatedMessage = format("§aLocated (%d blocks away)", distance);
+                String locatedMessage = "§aLocated";
+                // If player teleports to another dimension while locating, we cannot calculate distance.
+                if (player.getWorld().equals(location.get().getWorld())) {
+                    int distance = (int) Math.round(player.getLocation().distance(location.get()));
+                    locatedMessage += format(" (§e%d blocks away§a)", distance);
+                }
                 player.spigot().sendMessage(ACTION_BAR, new TextComponent(locatedMessage));
                 player.playSound(player.getLocation(), BLOCK_CONDUIT_ACTIVATE, 1.0f, 1.0f);
 
