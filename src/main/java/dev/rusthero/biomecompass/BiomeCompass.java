@@ -58,7 +58,7 @@ public class BiomeCompass extends JavaPlugin {
         try {
             VersionTracker versionTracker = new VersionTracker(this);
             if (!versionTracker.isUpToDate()) {
-                String outdatedMessage = "I am outdated! The latest version is %s." +
+                String outdatedMessage = "I am outdated! The latest version is %s. " +
                         "Please update to ensure compatibility and access to new features";
                 getLogger().warning(format(outdatedMessage, versionTracker.latestVersion));
             }
