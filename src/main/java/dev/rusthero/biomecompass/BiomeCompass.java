@@ -76,7 +76,7 @@ public class BiomeCompass extends JavaPlugin {
         // Create the player biome locators registry to track player cooldowns and active queries.
         playerBiomeLocators = new PlayerBiomeLocatorRegistry();
         // Create the biomes menu, which will be used by players to select a biome and initiate a search.
-        biomesMenu = new BiomesMenu();
+        biomesMenu = new BiomesMenu(settings.biomes);
 
         // Register the listeners required for the plugin to function properly.
         PluginManager pluginManager = getServer().getPluginManager();

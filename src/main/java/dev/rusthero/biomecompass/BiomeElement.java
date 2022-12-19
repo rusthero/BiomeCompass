@@ -90,10 +90,9 @@ public enum BiomeElement {
     SMALL_END_ISLANDS(Environment.THE_END, false, "END_STONE", DARK_PURPLE),
     END_MIDLANDS(Environment.THE_END, false, "END_STONE", DARK_PURPLE),
     END_HIGHLANDS(Environment.THE_END, false, "CHORUS_PLANT", DARK_PURPLE),
-    END_BARRENS(Environment.THE_END, false, "END_STONE", DARK_PURPLE);
+    END_BARRENS(Environment.THE_END, false, "END_STONE", DARK_PURPLE),
 
-    // https://minecraft.fandom.com/wiki/The_Void - Not useful for normal dimensions so commented.
-    // THE_VOID(Environment.NORMAL, false, "STONE", BLACK);
+    THE_VOID(Environment.NORMAL, false, "STONE", BLACK);
 
     /**
      * Returns the BiomeElement associated with the given ItemStack, if one exists.

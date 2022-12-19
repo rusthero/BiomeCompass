@@ -1,4 +1,4 @@
-# Biome Compass Configuration File
+# Biome Compass v${version} Configuration File
 # Check wiki to learn more https://github.com/rusthero/BiomeCompass/wiki
 
 cooldown: 5
@@ -6,3 +6,67 @@ resolution: 32
 radius: 6400
 cache_size: 100
 
+biomes:
+  ocean: true
+  plains: true
+  desert: true
+  windswept_hills: true
+  forest: true
+  taiga: true
+  swamp: true
+  mangrove_swamp: true
+  river: true
+  frozen_ocean: true
+  frozen_river: true
+  snowy_plains: true
+  mushroom_fields: true
+  beach: true
+  jungle: true
+  sparse_jungle: true
+  deep_ocean: true
+  stony_shore: true
+  snowy_beach: true
+  birch_forest: true
+  dark_forest: true
+  snowy_taiga: true
+  old_growth_pine_taiga: true
+  windswept_forest: true
+  savanna: true
+  savanna_plateau: true
+  badlands: true
+  wooded_badlands: true
+  warm_ocean: true
+  lukewarm_ocean: true
+  cold_ocean: true
+  deep_lukewarm_ocean: true
+  deep_cold_ocean: true
+  deep_frozen_ocean: true
+  sunflower_plains: true
+  windswept_gravelly_hills: true
+  flower_forest: true
+  ice_spikes: true
+  old_growth_birch_forest: true
+  old_growth_spruce_taiga: true
+  windswept_savanna: true
+  eroded_badlands: true
+  bamboo_jungle: true
+  meadow: true
+  grove: true
+  snowy_slopes: true
+  frozen_peaks: true
+  jagged_peaks: true
+  stony_peaks: true
+  dripstone_caves: true
+  lush_caves: true
+  deep_dark: true
+  nether_wastes: true
+  soul_sand_valley: true
+  crimson_forest: true
+  warped_forest: true
+  basalt_deltas: true
+  the_end: true
+  small_end_islands: true
+  end_midlands: true
+  end_highlands: true
+  end_barrens: true
+  the_void: false
