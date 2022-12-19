@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
 
+import static java.lang.String.format;
 import static net.md_5.bungee.api.ChatMessageType.ACTION_BAR;
 import static org.bukkit.Sound.BLOCK_CONDUIT_ACTIVATE;
 import static org.bukkit.Sound.BLOCK_CONDUIT_AMBIENT;
@@ -96,7 +97,9 @@ public class MenuClickListener implements Listener {
                     return;
                 }
 
-                player.spigot().sendMessage(ACTION_BAR, new TextComponent("§aLocated"));
+                int distance = (int) Math.round(player.getLocation().distance(location.get()));
+                String locatedMessage = format("§aLocated (%d blocks away)", distance);
+                player.spigot().sendMessage(ACTION_BAR, new TextComponent(locatedMessage));
                 player.playSound(player.getLocation(), BLOCK_CONDUIT_ACTIVATE, 1.0f, 1.0f);
 
                 String biomeName = element.get().displayName;
