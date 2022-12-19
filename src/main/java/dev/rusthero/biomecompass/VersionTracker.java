@@ -17,8 +17,9 @@ public class VersionTracker {
     static {
         try {
             API_URL = new URL("https://api.github.com/repos/rusthero/BiomeCompass/releases/latest");
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+        } catch (MalformedURLException exception) {
+            // This should never throw.
+            throw new RuntimeException(exception);
         }
     }
 
@@ -30,21 +31,11 @@ public class VersionTracker {
         currentVersion = "v" + descriptionFile.getVersion();
 
         HttpURLConnection connection = (HttpURLConnection) API_URL.openConnection();
-        int responseCode = connection.getResponseCode();
-        // TODO Remove these debug lines
-        plugin.getLogger().info("\nSending 'GET' request to URL : " + API_URL);
-        plugin.getLogger().info("Response Code : " + responseCode);
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        /*String inputLine;
-        StringBuffer response = new StringBuffer();
-        while ((inputLine = reader.readLine()) != null) response.append(inputLine);
-        reader.close();
-        plugin.getLogger().info(response.toString());*/
-
         JsonElement json = new JsonParser().parse(reader);
+
         latestVersion = json.getAsJsonObject().get("tag_name").getAsString();
-        plugin.getLogger().info("Latest version is " + latestVersion);
     }
 
     public boolean isUpToDate() {
