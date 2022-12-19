@@ -41,6 +41,9 @@ public final class Settings {
      */
     public final int cacheSize;
 
+    /**
+     * Determines which biomes are displayed in the Biome Compass GUI.
+     */
     public final HashMap<Biome, Boolean> biomes;
 
     /**
