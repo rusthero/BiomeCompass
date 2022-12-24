@@ -95,11 +95,12 @@ public class BiomeCompass extends JavaPlugin {
         pluginManager.registerEvents(new MenuDragListener(biomesMenu), this);
         pluginManager.registerEvents(new PrepareCraftListener(), this);
 
-        // Prepare vault and economy for Biome Compass money cost.
-        if (settings.moneyCost > 0 && pluginManager.getPlugin("Vault") != null) {
-            RegisteredServiceProvider<Economy> registration = servicesManager.getRegistration(Economy.class);
-            if (registration != null) economy = registration.getProvider();
-        }
+        // Prepare Vault and economy for Biome Compass money cost.
+        if (settings.moneyCost > 0)
+            if (pluginManager.getPlugin("Vault") != null) {
+                RegisteredServiceProvider<Economy> registration = servicesManager.getRegistration(Economy.class);
+                if (registration != null) economy = registration.getProvider();
+            } else getLogger().warning("Money cost is disabled because Vault plugin is missing");
 
         // Add a shaped recipe for the Biome Compass.
         NamespacedKey biomeCompassKey = new NamespacedKey(this, "biome_compass");
