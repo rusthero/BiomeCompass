@@ -42,6 +42,11 @@ public final class Settings {
     public final int cacheSize;
 
     /**
+     * A flag indicating whether the distance to the target biome should be displayed when the compass is used.
+     */
+    public final boolean showDistance;
+
+    /**
      * Determines which biomes are displayed in the Biome Compass GUI.
      */
     public final HashMap<Biome, Boolean> biomes;
@@ -56,6 +61,7 @@ public final class Settings {
         this.resolution = config.getInt("resolution");
         this.radius = config.getInt("radius");
         this.cacheSize = config.getInt("cache_size");
+        this.showDistance = config.getBoolean("show_distance");
 
         biomes = new HashMap<>();
         ConfigurationSection section = config.getConfigurationSection("biomes");

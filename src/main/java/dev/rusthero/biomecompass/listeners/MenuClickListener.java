@@ -99,7 +99,7 @@ public class MenuClickListener implements Listener {
 
                 String locatedMessage = "§aLocated";
                 // If player teleports to another dimension while locating, we cannot calculate distance.
-                if (player.getWorld().equals(location.get().getWorld())) {
+                if (plugin.getSettings().showDistance && player.getWorld().equals(location.get().getWorld())) {
                     int distance = (int) Math.round(player.getLocation().distance(location.get()));
                     locatedMessage += format(" (§e%d blocks away§a)", distance);
                 }
