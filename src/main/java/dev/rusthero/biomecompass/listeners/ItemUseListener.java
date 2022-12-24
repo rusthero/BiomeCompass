@@ -67,6 +67,7 @@ public class ItemUseListener implements Listener {
             final int playerExperience = Experience.getExp(player);
             if (playerExperience < experienceCost) {
                 player.spigot().sendMessage(ACTION_BAR, new TextComponent("§cInsufficient experience"));
+                player.playSound(location, BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
                 return;
             }
             Experience.giveExp(player, -experienceCost);
@@ -78,6 +79,7 @@ public class ItemUseListener implements Listener {
         if (moneyCost > 0 && economy != null) {
             if (!economy.has(player, moneyCost)) {
                 player.spigot().sendMessage(ACTION_BAR, new TextComponent("§cInsufficient funds"));
+                player.playSound(location, BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
                 return;
             }
             economy.withdrawPlayer(player, moneyCost);
