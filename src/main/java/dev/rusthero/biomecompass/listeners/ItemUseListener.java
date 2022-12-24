@@ -71,7 +71,7 @@ public class ItemUseListener implements Listener {
             }
         // Check if player has sufficient funds and withdraw money and experience.
         final Economy economy = plugin.getEconomy();
-        final int moneyCost = plugin.getSettings().moneyCost;
+        final double moneyCost = plugin.getSettings().moneyCost;
         if (moneyCost > 0 && economy != null)
             if (!economy.has(player, moneyCost)) {
                 player.spigot().sendMessage(ACTION_BAR, new TextComponent("§cInsufficient funds"));

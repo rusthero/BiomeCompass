@@ -52,14 +52,14 @@ public final class Settings {
     public final int experienceCost;
 
     /**
+     * The amount of money required to use the Biome Compass.
+     */
+    public final double moneyCost;
+
+    /**
      * Determines which biomes are displayed in the Biome Compass GUI.
      */
     public final HashMap<Biome, Boolean> biomes;
-
-    /**
-     * The amount of money required to use the Biome Compass.
-     */
-    public final int moneyCost;
 
     /**
      * Constructs a new Settings instance and reads in the setting values from the specified configuration file.
@@ -73,7 +73,7 @@ public final class Settings {
         this.cacheSize = config.getInt("cache_size");
         this.showDistance = config.getBoolean("show_distance");
         this.experienceCost = config.getInt("experience_cost");
-        this.moneyCost = config.getInt("money_cost");
+        this.moneyCost = config.getDouble("money_cost");
 
         biomes = new HashMap<>();
         ConfigurationSection section = config.getConfigurationSection("biomes");

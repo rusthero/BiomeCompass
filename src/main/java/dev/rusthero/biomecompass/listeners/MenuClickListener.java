@@ -78,12 +78,12 @@ public class MenuClickListener implements Listener {
         }
         // Withdraw money from the player.
         final Economy economy = plugin.getEconomy();
-        final int moneyCost = plugin.getSettings().moneyCost;
+        final double moneyCost = plugin.getSettings().moneyCost;
         if (moneyCost > 0 && economy != null) {
             if (!economy.has(player, moneyCost)) return;
             economy.withdrawPlayer(player, moneyCost);
             String currencyName = moneyCost == 1 ? economy.currencyNameSingular() : economy.currencyNamePlural();
-            costMessages.add(format("§6%d %s", moneyCost, currencyName));
+            costMessages.add(format("§6%.2f %s", moneyCost, currencyName));
         }
         String locatingMessage = "§eLocating";
         if (costMessages.size() > 0) locatingMessage += ": §cCost: " + String.join("§c, ", costMessages);
