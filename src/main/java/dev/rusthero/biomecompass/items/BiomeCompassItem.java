@@ -24,6 +24,11 @@ public class BiomeCompassItem {
     public static final String DISPLAY_NAME = "§3Biome Compass";
 
     /**
+     * The CustomModelData value used to add custom textures to the Biome Compass item.
+     */
+    public static final int CUSTOM_MODEL_DATA = 10918;
+
+    /**
      * The default ItemStack form of the Biome Compass.
      */
     private static ItemStack defaultItem;
@@ -47,6 +52,7 @@ public class BiomeCompassItem {
         if (meta == null) return defaultItem;
 
         meta.setDisplayName(DISPLAY_NAME);
+        meta.setCustomModelData(CUSTOM_MODEL_DATA);
         defaultItem.setItemMeta(meta);
 
         return defaultItem;
@@ -141,16 +147,13 @@ public class BiomeCompassItem {
         name += format(" §6(%s§6)", biomeName);
         meta.setDisplayName(name);
 
-        /*
-        I think it is cheating to have location shown on compass, they can only point! They can't talk!
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(format("§5Location: %d, %d, %d", location.getBlockX(), location.getBlockY(), location.getBlockZ()));
-        meta.setLore(lore);
-        */
-
         // We want compass to point a location however do not want to put an actual lodestone so tracked set to false.
         meta.setLodestoneTracked(false);
         meta.setLodestone(location);
+
+        // Update the custom model data if it is not set, older items created before v1.2.0 may not have the data set.
+        if (meta.getCustomModelData() != CUSTOM_MODEL_DATA)
+            meta.setCustomModelData(CUSTOM_MODEL_DATA);
 
         item.setItemMeta(meta);
     }

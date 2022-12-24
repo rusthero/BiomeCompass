@@ -3,6 +3,7 @@ package dev.rusthero.biomecompass.listeners;
 import dev.rusthero.biomecompass.BiomeCompass;
 import dev.rusthero.biomecompass.items.BiomeCompassItem;
 import dev.rusthero.biomecompass.locate.PlayerBiomeLocator;
+import dev.rusthero.biomecompass.util.Experience;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -57,6 +58,17 @@ public class ItemUseListener implements Listener {
             player.spigot().sendMessage(ACTION_BAR, new TextComponent("§9Cooling Down"));
             player.playSound(location, BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
             return;
+        }
+
+        // Check if player has enough experience, if so withdraw.
+        final int experienceCost = plugin.getSettings().experienceCost;
+        if (experienceCost > 0) {
+            final int playerExperience = Experience.getExp(player);
+            if (playerExperience < experienceCost) {
+                player.spigot().sendMessage(ACTION_BAR, new TextComponent("Insufficient experience"));
+                return;
+            }
+            Experience.changeExp(player, playerExperience - experienceCost);
         }
 
         player.playSound(location, BLOCK_ENDER_CHEST_OPEN, 1.0f, 4.0f);

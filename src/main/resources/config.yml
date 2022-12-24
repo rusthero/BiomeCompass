@@ -6,6 +6,7 @@ resolution: 32
 radius: 6400
 cache_size: 100
 show_distance: true
+experience_cost: 64
 
 biomes:
   ocean: true
