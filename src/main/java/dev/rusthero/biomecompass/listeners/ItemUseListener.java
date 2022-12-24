@@ -61,7 +61,7 @@ public class ItemUseListener implements Listener {
             return;
         }
 
-        // Check if player has enough experience, if so withdraw.
+        // Check if player has enough experience, do not withdraw before being sure player has the funds.
         final int experienceCost = plugin.getSettings().experienceCost;
         if (experienceCost > 0) {
             final int playerExperience = Experience.getExp(player);
@@ -70,10 +70,8 @@ public class ItemUseListener implements Listener {
                 player.playSound(location, BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
                 return;
             }
-            Experience.giveExp(player, -experienceCost);
         }
-
-        // Check if player has sufficient funds and withdraw.
+        // Check if player has sufficient funds and withdraw money and experience.
         final Economy economy = plugin.getEconomy();
         final int moneyCost = plugin.getSettings().moneyCost;
         if (moneyCost > 0 && economy != null) {
@@ -84,6 +82,8 @@ public class ItemUseListener implements Listener {
             }
             economy.withdrawPlayer(player, moneyCost);
         }
+        // Withdraw experience here because we want to be sure player also has enough funds.
+        Experience.giveExp(player, -experienceCost);
 
         player.playSound(location, BLOCK_ENDER_CHEST_OPEN, 1.0f, 4.0f);
         plugin.getBiomesMenu().open(player);
