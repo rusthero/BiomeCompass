@@ -66,10 +66,10 @@ public class ItemUseListener implements Listener {
         if (experienceCost > 0) {
             final int playerExperience = Experience.getExp(player);
             if (playerExperience < experienceCost) {
-                player.spigot().sendMessage(ACTION_BAR, new TextComponent("Insufficient experience"));
+                player.spigot().sendMessage(ACTION_BAR, new TextComponent("§cInsufficient experience"));
                 return;
             }
-            Experience.changeExp(player, playerExperience - experienceCost);
+            Experience.giveExp(player, -experienceCost);
         }
 
         // Check if player has sufficient funds and withdraw.

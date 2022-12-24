@@ -89,7 +89,7 @@ public final class Experience {
     }
 
     /**
-     * Change a Player's experience.
+     * Gives experience to a player.
      *
      * <p>This method is preferred over {@link Player#giveExp(int)}.
      * <br>In older versions the method does not take differences in exp per level into account.
@@ -101,7 +101,7 @@ public final class Experience {
      * @param player Player to be affected.
      * @param exp    The amount of experience to add or remove.
      */
-    public static void changeExp(Player player, int exp) {
+    public static void giveExp(Player player, int exp) {
         exp += getExp(player);
 
         if (exp < 0) exp = 0;
