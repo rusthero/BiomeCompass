@@ -56,7 +56,7 @@ public class ItemUseListener implements Listener {
             return;
         }
         if (locator.isOnCooldown()) {
-            player.spigot().sendMessage(ACTION_BAR, new TextComponent("§9Cooling Down"));
+            player.spigot().sendMessage(ACTION_BAR, new TextComponent("§9Cooling down"));
             player.playSound(location, BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
             return;
         }
