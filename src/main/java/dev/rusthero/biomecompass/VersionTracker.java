@@ -12,7 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * a utility class for the Biome Compass plugin that allows the plugin to check for updates from the plugin's GitHub
+ * An utility class for the Biome Compass plugin that allows the plugin to check for updates from the plugin's GitHub
  * repository.
  */
 public class VersionTracker {
@@ -37,7 +37,7 @@ public class VersionTracker {
     public final String currentVersion;
 
     /**
-     * latest version of the plugin, as retrieved from the GitHub API.
+     * Latest version of the plugin, as retrieved from the GitHub API.
      */
     public final String latestVersion;
 
