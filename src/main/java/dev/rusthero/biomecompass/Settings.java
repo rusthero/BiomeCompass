@@ -82,7 +82,8 @@ public final class Settings {
                 try {
                     biomes.put(Biome.valueOf(biomeStr.toUpperCase()), section.getBoolean(biomeStr));
                 } catch (IllegalArgumentException ignored) {
-
+                    // We can safely ignore if a biome name is invalid because we cannot locate a biome which does
+                    // not exist within this version anyway.
                 }
             });
     }
