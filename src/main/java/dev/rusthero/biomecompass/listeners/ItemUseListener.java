@@ -5,6 +5,7 @@ import dev.rusthero.biomecompass.items.BiomeCompassItem;
 import dev.rusthero.biomecompass.locate.PlayerBiomeLocator;
 import dev.rusthero.biomecompass.util.Experience;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -69,6 +70,17 @@ public class ItemUseListener implements Listener {
                 return;
             }
             Experience.changeExp(player, playerExperience - experienceCost);
+        }
+
+        // Check if player has sufficient funds and withdraw.
+        final Economy economy = plugin.getEconomy();
+        final int moneyCost = plugin.getSettings().moneyCost;
+        if (moneyCost > 0 && economy != null) {
+            if (!economy.has(player, moneyCost)) {
+                player.spigot().sendMessage(ACTION_BAR, new TextComponent("§cInsufficient funds"));
+                return;
+            }
+            economy.withdrawPlayer(player, moneyCost);
         }
 
         player.playSound(location, BLOCK_ENDER_CHEST_OPEN, 1.0f, 4.0f);

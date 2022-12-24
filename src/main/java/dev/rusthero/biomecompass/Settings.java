@@ -57,6 +57,11 @@ public final class Settings {
     public final HashMap<Biome, Boolean> biomes;
 
     /**
+     * The amount of money required to use the Biome Compass.
+     */
+    public final int moneyCost;
+
+    /**
      * Constructs a new Settings instance and reads in the setting values from the specified configuration file.
      *
      * @param config The file configuration from which the setting values will be read.
@@ -68,6 +73,7 @@ public final class Settings {
         this.cacheSize = config.getInt("cache_size");
         this.showDistance = config.getBoolean("show_distance");
         this.experienceCost = config.getInt("experience_cost");
+        this.moneyCost = config.getInt("money_cost");
 
         biomes = new HashMap<>();
         ConfigurationSection section = config.getConfigurationSection("biomes");
