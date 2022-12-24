@@ -61,29 +61,23 @@ public class ItemUseListener implements Listener {
             return;
         }
 
-        // Check if player has enough experience, do not withdraw before being sure player has the funds.
+        // Check if player has enough experience
         final int experienceCost = plugin.getSettings().experienceCost;
-        if (experienceCost > 0) {
-            final int playerExperience = Experience.getExp(player);
-            if (playerExperience < experienceCost) {
+        if (experienceCost > 0)
+            if (Experience.getExp(player) < experienceCost) {
                 player.spigot().sendMessage(ACTION_BAR, new TextComponent("§cInsufficient experience"));
                 player.playSound(location, BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
                 return;
             }
-        }
         // Check if player has sufficient funds and withdraw money and experience.
         final Economy economy = plugin.getEconomy();
         final int moneyCost = plugin.getSettings().moneyCost;
-        if (moneyCost > 0 && economy != null) {
+        if (moneyCost > 0 && economy != null)
             if (!economy.has(player, moneyCost)) {
                 player.spigot().sendMessage(ACTION_BAR, new TextComponent("§cInsufficient funds"));
                 player.playSound(location, BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
                 return;
             }
-            economy.withdrawPlayer(player, moneyCost);
-        }
-        // Withdraw experience here because we want to be sure player also has enough funds.
-        Experience.giveExp(player, -experienceCost);
 
         player.playSound(location, BLOCK_ENDER_CHEST_OPEN, 1.0f, 4.0f);
         plugin.getBiomesMenu().open(player);

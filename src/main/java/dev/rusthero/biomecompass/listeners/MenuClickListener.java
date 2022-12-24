@@ -4,7 +4,9 @@ import dev.rusthero.biomecompass.BiomeCompass;
 import dev.rusthero.biomecompass.BiomeElement;
 import dev.rusthero.biomecompass.items.BiomeCompassItem;
 import dev.rusthero.biomecompass.locate.PlayerBiomeLocator;
+import dev.rusthero.biomecompass.util.Experience;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,6 +18,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashSet;
 import java.util.Optional;
 
 import static java.lang.String.format;
@@ -65,7 +68,26 @@ public class MenuClickListener implements Listener {
         // Menu will be closed as player selected a biome.
         player.closeInventory();
 
-        player.spigot().sendMessage(ACTION_BAR, new TextComponent("§eLocating"));
+        final HashSet<String> costMessages = new HashSet<>();
+        // Withdraw experience from the player.
+        final int experienceCost = plugin.getSettings().experienceCost;
+        if (experienceCost > 0) {
+            if (Experience.getExp(player) < experienceCost) return;
+            Experience.giveExp(player, -experienceCost);
+            costMessages.add(format("§a%d XP", experienceCost));
+        }
+        // Withdraw money from the player.
+        final Economy economy = plugin.getEconomy();
+        final int moneyCost = plugin.getSettings().moneyCost;
+        if (moneyCost > 0 && economy != null) {
+            if (!economy.has(player, moneyCost)) return;
+            economy.withdrawPlayer(player, moneyCost);
+            String currencyName = moneyCost == 1 ? economy.currencyNameSingular() : economy.currencyNamePlural();
+            costMessages.add(format("§6%d %s", moneyCost, currencyName));
+        }
+        String locatingMessage = "§eLocating";
+        if (costMessages.size() > 0) locatingMessage += ": §cCost: " + String.join("§c, ", costMessages);
+        player.spigot().sendMessage(ACTION_BAR, new TextComponent(locatingMessage));
         player.playSound(origin, BLOCK_CONDUIT_ACTIVATE, 1.0f, 1.0f);
 
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
