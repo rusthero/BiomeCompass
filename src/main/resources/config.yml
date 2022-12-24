@@ -5,6 +5,7 @@ cooldown: 5
 resolution: 32
 radius: 6400
 cache_size: 100
+money_cost: 25
 
 biomes:
   ocean: true

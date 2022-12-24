@@ -6,6 +6,8 @@ website: https://www.spigotmc.org/resources/biome-compass.106779/
 
 api-version: 1.16
 main: dev.rusthero.biomecompass.BiomeCompass
+softdepend:
+  - Vault
 
 permissions:
   biomecompass.*:

@@ -8,9 +8,12 @@ import dev.rusthero.biomecompass.listeners.MenuDragListener;
 import dev.rusthero.biomecompass.listeners.PrepareCraftListener;
 import dev.rusthero.biomecompass.locate.LocateBiomeCache;
 import dev.rusthero.biomecompass.locate.PlayerBiomeLocatorRegistry;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -45,6 +48,11 @@ public class BiomeCompass extends JavaPlugin {
     private PlayerBiomeLocatorRegistry playerBiomeLocators;
 
     /**
+     * The Economy instance used to access the Vault API provider.
+     */
+    private Economy economy;
+
+    /**
      * A menu used to select biomes. Players can use this menu to locate desired biomes by using the compass item.
      *
      * @see ItemUseListener
@@ -54,6 +62,9 @@ public class BiomeCompass extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        final PluginManager pluginManager = getServer().getPluginManager();
+        final ServicesManager servicesManager = getServer().getServicesManager();
+
         // Check if the plugin is outdated and log a warning message if it is.
         try {
             VersionTracker versionTracker = new VersionTracker(this);
@@ -79,11 +90,16 @@ public class BiomeCompass extends JavaPlugin {
         biomesMenu = new BiomesMenu(settings.biomes);
 
         // Register the listeners required for the plugin to function properly.
-        PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new ItemUseListener(this), this);
         pluginManager.registerEvents(new MenuClickListener(this), this);
         pluginManager.registerEvents(new MenuDragListener(biomesMenu), this);
         pluginManager.registerEvents(new PrepareCraftListener(), this);
+
+        // Prepare vault and economy for Biome Compass money cost.
+        if (settings.moneyCost > 0 && pluginManager.getPlugin("Vault") != null) {
+            RegisteredServiceProvider<Economy> registration = servicesManager.getRegistration(Economy.class);
+            if (registration != null) economy = registration.getProvider();
+        }
 
         // Add a shaped recipe for the Biome Compass.
         NamespacedKey biomeCompassKey = new NamespacedKey(this, "biome_compass");
@@ -112,5 +128,9 @@ public class BiomeCompass extends JavaPlugin {
 
     public BiomesMenu getBiomesMenu() {
         return biomesMenu;
+    }
+
+    public Economy getEconomy() {
+        return economy;
     }
 }
