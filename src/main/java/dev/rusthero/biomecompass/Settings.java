@@ -46,6 +46,10 @@ public final class Settings {
      */
     public final boolean showDistance;
 
+     * The number of experience points required to use the Biome Compass.
+     */
+    public final int experienceCost;
+
     /**
      * Determines which biomes are displayed in the Biome Compass GUI.
      */
@@ -62,6 +66,7 @@ public final class Settings {
         this.radius = config.getInt("radius");
         this.cacheSize = config.getInt("cache_size");
         this.showDistance = config.getBoolean("show_distance");
+        this.experienceCost = config.getInt("experience_cost");
 
         biomes = new HashMap<>();
         ConfigurationSection section = config.getConfigurationSection("biomes");
