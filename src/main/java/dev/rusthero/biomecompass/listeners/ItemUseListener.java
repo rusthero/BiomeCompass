@@ -3,7 +3,9 @@ package dev.rusthero.biomecompass.listeners;
 import dev.rusthero.biomecompass.BiomeCompass;
 import dev.rusthero.biomecompass.items.BiomeCompassItem;
 import dev.rusthero.biomecompass.locate.PlayerBiomeLocator;
+import dev.rusthero.biomecompass.util.Experience;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -54,10 +56,28 @@ public class ItemUseListener implements Listener {
             return;
         }
         if (locator.isOnCooldown()) {
-            player.spigot().sendMessage(ACTION_BAR, new TextComponent("§9Cooling Down"));
+            player.spigot().sendMessage(ACTION_BAR, new TextComponent("§9Cooling down"));
             player.playSound(location, BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
             return;
         }
+
+        // Check if player has enough experience
+        final int experienceCost = plugin.getSettings().experienceCost;
+        if (experienceCost > 0)
+            if (Experience.getExp(player) < experienceCost) {
+                player.spigot().sendMessage(ACTION_BAR, new TextComponent("§cInsufficient experience"));
+                player.playSound(location, BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
+                return;
+            }
+        // Check if player has sufficient funds and withdraw money and experience.
+        final Economy economy = plugin.getEconomy();
+        final double moneyCost = plugin.getSettings().moneyCost;
+        if (moneyCost > 0 && economy != null)
+            if (!economy.has(player, moneyCost)) {
+                player.spigot().sendMessage(ACTION_BAR, new TextComponent("§cInsufficient funds"));
+                player.playSound(location, BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
+                return;
+            }
 
         player.playSound(location, BLOCK_ENDER_CHEST_OPEN, 1.0f, 4.0f);
         plugin.getBiomesMenu().open(player);

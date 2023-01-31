@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'dev.rusthero.biomecompass'
-version '1.1.0'
+version '1.2.0'
 
 compileJava.options.encoding = "UTF-8"
 
@@ -15,11 +15,15 @@ repositories {
     maven {
         url "https://oss.sonatype.org/content/repositories/snapshots/"
     }
+    maven {
+        url "https://jitpack.io"
+    }
 }
 
 dependencies {
     implementation "org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT"
     implementation "com.google.guava:guava:31.1-jre"
+    implementation "com.github.MilkBowl:VaultAPI:1.7"
 }
 
 processResources {

@@ -42,6 +42,21 @@ public final class Settings {
     public final int cacheSize;
 
     /**
+     * A flag indicating whether the distance to the target biome should be displayed when the compass is used.
+     */
+    public final boolean showDistance;
+
+    /**
+     * The number of experience points required to use the Biome Compass.
+     */
+    public final int experienceCost;
+
+    /**
+     * The amount of money required to use the Biome Compass.
+     */
+    public final double moneyCost;
+
+    /**
      * Determines which biomes are displayed in the Biome Compass GUI.
      */
     public final HashMap<Biome, Boolean> biomes;
@@ -56,6 +71,9 @@ public final class Settings {
         this.resolution = config.getInt("resolution");
         this.radius = config.getInt("radius");
         this.cacheSize = config.getInt("cache_size");
+        this.showDistance = config.getBoolean("show_distance");
+        this.experienceCost = config.getInt("experience_cost");
+        this.moneyCost = config.getDouble("money_cost");
 
         biomes = new HashMap<>();
         ConfigurationSection section = config.getConfigurationSection("biomes");
@@ -64,7 +82,8 @@ public final class Settings {
                 try {
                     biomes.put(Biome.valueOf(biomeStr.toUpperCase()), section.getBoolean(biomeStr));
                 } catch (IllegalArgumentException ignored) {
-
+                    // We can safely ignore if a biome name is invalid because we cannot locate a biome which does
+                    // not exist within this version anyway.
                 }
             });
     }
