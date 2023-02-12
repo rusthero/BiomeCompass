@@ -2,6 +2,7 @@ package dev.rusthero.biomecompass;
 
 import dev.rusthero.biomecompass.gui.BiomesMenu;
 import dev.rusthero.biomecompass.items.BiomeCompassItem;
+import dev.rusthero.biomecompass.lang.LanguageRegistry;
 import dev.rusthero.biomecompass.listeners.ItemUseListener;
 import dev.rusthero.biomecompass.listeners.MenuClickListener;
 import dev.rusthero.biomecompass.listeners.MenuDragListener;
@@ -65,6 +66,8 @@ public class BiomeCompass extends JavaPlugin {
         final PluginManager pluginManager = getServer().getPluginManager();
         final ServicesManager servicesManager = getServer().getServicesManager();
 
+        final LanguageRegistry languages = new LanguageRegistry();
+
         // Check if the plugin is outdated and log a warning message if it is.
         try {
             VersionTracker versionTracker = new VersionTracker(this);
@@ -80,7 +83,7 @@ public class BiomeCompass extends JavaPlugin {
         // Prepare the configuration and settings for easier access to constants.
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
-        settings = new Settings(getConfig());
+        settings = new Settings(getConfig(), languages);
 
         // Create cache to store search queries for faster access to already searched biomes in an area.
         locateBiomeCache = new LocateBiomeCache(this);
