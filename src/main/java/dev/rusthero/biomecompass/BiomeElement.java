@@ -1,15 +1,16 @@
 package dev.rusthero.biomecompass;
 
+import dev.rusthero.biomecompass.lang.Field;
+import dev.rusthero.biomecompass.lang.Language;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+import static java.lang.String.format;
 import static org.bukkit.ChatColor.*;
 import static org.bukkit.World.Environment;
 
@@ -101,18 +102,14 @@ public enum BiomeElement {
      * @return An Optional containing the BiomeElement whose item matches the given ItemStack, if one exists. An
      * empty Optional is returned if no matching biome is found.
      */
-    public static Optional<BiomeElement> getByItemStack(ItemStack item) {
-        return Arrays.stream(values()).filter(element -> element.item.equals(item)).findFirst();
+    public static Optional<BiomeElement> getByItemStack(ItemStack item, Language language) {
+        return Arrays.stream(values()).filter(element -> element.getItem(language).equals(item)).findFirst();
     }
 
     /**
-     * The display name for the element, which can be colored. This name is used for renaming the compass and item
-     * names in the biomes menu.
-     *
-     * @see dev.rusthero.biomecompass.gui.BiomesMenu
-     * @see dev.rusthero.biomecompass.items.BiomeCompassItem#bindLocation(String, Location)
+     * Color value for display name of the Biome ItemStack that is going to be used in Biomes Menu.
      */
-    public final String displayName;
+    public final ChatColor color;
 
     /**
      * A flag indicating whether the biome generates underground. This is useful for biome locating.
@@ -127,9 +124,9 @@ public enum BiomeElement {
     public final Environment environment;
 
     /**
-     * The ItemStack representation of the biome. This is used in the BiomesMenu.
+     * Material of the ItemStack that is going to be used in Biomes Menu.
      */
-    public final ItemStack item;
+    private Material material;
 
     /**
      * Constructs a new BiomeElement with the given environment, underground flag, material name, and chat color.
@@ -146,28 +143,30 @@ public enum BiomeElement {
     BiomeElement(Environment environment, boolean isUnderground, String materialStr, ChatColor color) {
         this.environment = environment;
         this.isUnderground = isUnderground;
+        this.color = color;
 
         // To support future versions, we use the names of materials as strings instead of the Material class. This
         // allows new biomes and materials to be used without changing the API version or using hacks.
-        Material material;
         try {
             material = Material.valueOf(materialStr);
         } catch (IllegalArgumentException exception) {
             material = Material.END_GATEWAY;
         }
+    }
 
-        // Format the enum name: NETHER_WASTES => Nether Wastes
-        displayName = color + Arrays.stream(this.name().split("_"))
-                .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
-                .collect(Collectors.joining(" "));
-
-        item = new ItemStack(material, 1);
+    public ItemStack getItem(Language language) {
+        ItemStack item = new ItemStack(material, 1);
         final ItemMeta meta = item.getItemMeta();
 
         // This for suppressing IDE warning, it cannot be null.
-        if (meta == null) return;
+        if (meta == null) return item;
 
-        meta.setDisplayName(displayName);
+        meta.setDisplayName(getDisplayName(language));
         item.setItemMeta(meta);
+        return item;
+    }
+
+    public String getDisplayName(Language language) {
+        return color + language.getString(Field.valueOf(format("BIOME_%s_NAME", name())));
     }
 }

@@ -1,11 +1,11 @@
 package dev.rusthero.biomecompass;
 
 import dev.rusthero.biomecompass.lang.Language;
-import dev.rusthero.biomecompass.lang.LanguageRegistry;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -73,8 +73,8 @@ public final class Settings {
      *
      * @param config The file configuration from which the setting values will be read.
      */
-    Settings(FileConfiguration config, LanguageRegistry languages) {
-        this.language = languages.get(config.getString("language"));
+    Settings(FileConfiguration config) throws IOException {
+        this.language = new Language(config.getString("language"));
         this.cooldown = config.getLong("cooldown");
         this.showDistance = config.getBoolean("show_distance");
         this.resolution = config.getInt("resolution");

@@ -1,6 +1,7 @@
 package dev.rusthero.biomecompass.locate;
 
 import dev.rusthero.biomecompass.BiomeCompass;
+import dev.rusthero.biomecompass.lang.Field;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -121,7 +122,7 @@ public class PlayerBiomeLocator {
         Location location = player.getLocation();
         World world = location.getWorld();
         if (world == null) return;
-        plugin.getLogger().info(format("%s requested to locate biome %s at location %d, %d, %d in %s",
+        plugin.getLogger().info(format(plugin.getSettings().language.getString(Field.LOG_PLAYER_LOCATE),
                                        player.getName(),
                                        biome.name(),
                                        location.getBlockX(),

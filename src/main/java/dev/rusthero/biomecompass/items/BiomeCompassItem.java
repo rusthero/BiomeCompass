@@ -1,5 +1,7 @@
 package dev.rusthero.biomecompass.items;
 
+import dev.rusthero.biomecompass.lang.Field;
+import dev.rusthero.biomecompass.lang.Language;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -36,12 +38,13 @@ public class BiomeCompassItem {
     /**
      * Returns the default ItemStack form of the Biome Compass. This method is useful for generating new instances of
      * the Biome Compass, and should not be used for comparing existing ItemStacks. Instead, use the
-     * {@link BiomeCompassItem#isInstance(ItemStack)} and {@link BiomeCompassItem#ifInstance(ItemStack, Consumer)}
+     * {@link BiomeCompassItem#isInstance(ItemStack, Language)} and
+     * {@link BiomeCompassItem#ifInstance(ItemStack, Language, Consumer)}
      * methods for this purpose.
      *
      * @return The default ItemStack form of the Biome Compass.
      */
-    public static ItemStack getDefault() {
+    public static ItemStack getDefault(Language language) {
         if (defaultItem != null) return defaultItem;
         // If it is the first time being called, register it. We do this to avoid generating the ItemStack every time.
         defaultItem = new ItemStack(COMPASS, 1);
@@ -51,7 +54,7 @@ public class BiomeCompassItem {
         // This for suppressing IDE warning, it cannot be null.
         if (meta == null) return defaultItem;
 
-        meta.setDisplayName(DISPLAY_NAME);
+        meta.setDisplayName("§3" + language.getString(Field.ITEM_BIOME_COMPASS_DISPLAY_NAME));
         meta.setCustomModelData(CUSTOM_MODEL_DATA);
         defaultItem.setItemMeta(meta);
 
@@ -64,8 +67,8 @@ public class BiomeCompassItem {
      * @param key the namespaced key to uniquely identify the recipe and avoid collisions
      * @return the shaped recipe for crafting the Biome Compass
      */
-    public static ShapedRecipe getRecipe(NamespacedKey key) {
-        ShapedRecipe recipe = new ShapedRecipe(key, BiomeCompassItem.getDefault());
+    public static ShapedRecipe getRecipe(NamespacedKey key, Language language) {
+        ShapedRecipe recipe = new ShapedRecipe(key, BiomeCompassItem.getDefault(language));
         recipe.shape("WEB", "DCS", "PNL");
         recipe.setIngredient('W', WATER_BUCKET);
         recipe.setIngredient('E', END_STONE);
@@ -84,10 +87,10 @@ public class BiomeCompassItem {
      *
      * @param item     The item to check.
      * @param consumer The consumer to accept the Biome Compass item if it is an instance.
-     * @see #isInstance(ItemStack)
+     * @see #isInstance(ItemStack, Language)
      */
-    public static void ifInstance(ItemStack item, Consumer<BiomeCompassItem> consumer) {
-        if (isInstance(item)) consumer.accept(new BiomeCompassItem(item));
+    public static void ifInstance(ItemStack item, Language language, Consumer<BiomeCompassItem> consumer) {
+        if (isInstance(item, language)) consumer.accept(new BiomeCompassItem(item));
     }
 
     /**
@@ -97,12 +100,12 @@ public class BiomeCompassItem {
      * @param item The item to check.
      * @return {@code true} if the item is a valid Biome Compass, {@code false} otherwise.
      */
-    public static boolean isInstance(ItemStack item) {
-        if (item.getType() != getDefault().getType()) return false;
+    public static boolean isInstance(ItemStack item, Language language) {
+        if (item.getType() != getDefault(language).getType()) return false;
         if (!item.hasItemMeta()) return false;
 
         // These checks are used to suppress any potential null value warnings from the IDE.
-        if (getDefault().getItemMeta() == null || item.getItemMeta() == null) return false;
+        if (getDefault(language).getItemMeta() == null || item.getItemMeta() == null) return false;
 
         // TODO: NBT tags may be useful for checking to prevent naughty scenarios.
 
@@ -122,7 +125,7 @@ public class BiomeCompassItem {
     /**
      * Constructs a new instance of the Biome Compass item. The access level is private because it is important to
      * ensure that the provided item is a valid Biome Compass before constructing the object. It is recommended to use
-     * {@link #ifInstance(ItemStack, Consumer)} to construct this object.
+     * {@link #ifInstance(ItemStack, Language, Consumer)} to construct this object.
      *
      * @param item the ItemStack representation of the Biome Compass
      */
