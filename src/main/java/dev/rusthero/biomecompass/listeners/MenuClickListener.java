@@ -136,7 +136,7 @@ public class MenuClickListener implements Listener {
                     return;
                 }
 
-                String locatedMessage = "§aLocated";
+                String locatedMessage = "§a" + lang.getString(ITEM_BIOME_COMPASS_LOCATED);
                 // If player teleports to another dimension while locating, we cannot calculate distance.
                 if (plugin.getSettings().showDistance && player.getWorld().equals(location.get().getWorld())) {
                     int distance = (int) Math.round(player.getLocation().distance(location.get()));

@@ -1,6 +1,7 @@
 package dev.rusthero.biomecompass.locate;
 
 import dev.rusthero.biomecompass.BiomeCompass;
+import dev.rusthero.biomecompass.BiomeElement;
 import dev.rusthero.biomecompass.lang.Field;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import java.util.Optional;
 
 import static java.lang.String.format;
+import static org.bukkit.ChatColor.stripColor;
 
 /**
  * Represents a player who is performing biome location queries. This class provides a higher-level interface for
@@ -122,9 +124,11 @@ public class PlayerBiomeLocator {
         Location location = player.getLocation();
         World world = location.getWorld();
         if (world == null) return;
+
+        String biomeName = stripColor(BiomeElement.valueOf(biome.name()).getDisplayName(plugin.getSettings().language));
         plugin.getLogger().info(format(plugin.getSettings().language.getString(Field.LOG_PLAYER_LOCATE),
                                        player.getName(),
-                                       biome.name(),
+                                       biomeName,
                                        location.getBlockX(),
                                        location.getBlockY(),
                                        location.getBlockZ(),
