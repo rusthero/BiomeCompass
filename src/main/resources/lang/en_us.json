@@ -3,8 +3,8 @@
   "lang.name.transliteration": "English (US)",
   "lang.locale_code": "en_us",
 
-  "log.biome_compass.enabled": "BiomeCompass is enabled",
-  "log.biome_compass.disabled": "BiomeCompass is disabled",
+  "log.biome_compass.enabled": "Biome Compass is enabled",
+  "log.biome_compass.disabled": "Biome Compass is disabled",
   "log.vault.missing": "Money cost is disabled because Vault plugin is missing",
   "log.version_tracker.outdated": "I am outdated! The latest version is %s. Please update to ensure compatibility and access to new features",
   "log.version_tracker.error": "Version tracker could not check for the latest version",
