@@ -9,9 +9,13 @@ public final class LanguageRegistry {
         this.languages = new HashSet<>();
     }
 
-    public void register(String localeCode) {
+    public boolean register(String localeCode) {
         // TODO Read file etc
-        new Language(localeCode.toLowerCase());
+
+        Language language = new Language(localeCode.toLowerCase());
+        languages.add(language);
+        
+        return true;
     }
 
     public Language get(String localeCode) {
