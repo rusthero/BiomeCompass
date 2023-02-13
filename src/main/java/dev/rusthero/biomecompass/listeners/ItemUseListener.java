@@ -46,7 +46,7 @@ public class ItemUseListener implements Listener {
     private void onItemUse(PlayerInteractEvent event) {
         if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) return;
         Language lang = plugin.getSettings().language;
-        if (event.getItem() == null || !BiomeCompassItem.isInstance(event.getItem(), lang)) return;
+        if (event.getItem() == null || !BiomeCompassItem.isInstance(event.getItem(), lang, plugin)) return;
 
         Player player = event.getPlayer();
         Location location = player.getLocation();

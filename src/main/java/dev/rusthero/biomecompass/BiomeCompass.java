@@ -98,7 +98,7 @@ public class BiomeCompass extends JavaPlugin {
         pluginManager.registerEvents(new ItemUseListener(this), this);
         pluginManager.registerEvents(new MenuClickListener(this), this);
         pluginManager.registerEvents(new MenuDragListener(biomesMenu), this);
-        pluginManager.registerEvents(new PrepareCraftListener(settings.language), this);
+        pluginManager.registerEvents(new PrepareCraftListener(settings.language, this), this);
 
         // Prepare Vault and economy for Biome Compass money cost.
         if (settings.moneyCost > 0)
@@ -109,7 +109,7 @@ public class BiomeCompass extends JavaPlugin {
 
         // Add a shaped recipe for the Biome Compass.
         NamespacedKey biomeCompassKey = new NamespacedKey(this, "biome_compass");
-        ShapedRecipe biomeCompassRecipe = BiomeCompassItem.getRecipe(biomeCompassKey, settings.language);
+        ShapedRecipe biomeCompassRecipe = BiomeCompassItem.getRecipe(biomeCompassKey, settings.language, this);
         getServer().addRecipe(biomeCompassRecipe);
 
         getLogger().info(settings.language.getString(LOG_BIOME_COMPASS_ENABLED));

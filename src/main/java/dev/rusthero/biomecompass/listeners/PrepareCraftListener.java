@@ -1,5 +1,6 @@
 package dev.rusthero.biomecompass.listeners;
 
+import dev.rusthero.biomecompass.BiomeCompass;
 import dev.rusthero.biomecompass.items.BiomeCompassItem;
 import dev.rusthero.biomecompass.lang.Language;
 import org.bukkit.entity.Player;
@@ -17,9 +18,11 @@ import org.bukkit.inventory.ShapedRecipe;
  */
 public class PrepareCraftListener implements Listener {
     private final Language language;
+    private final BiomeCompass plugin;
 
-    public PrepareCraftListener(Language language) {
+    public PrepareCraftListener(Language language, BiomeCompass plugin) {
         this.language = language;
+        this.plugin = plugin;
     }
 
     /**
@@ -35,7 +38,7 @@ public class PrepareCraftListener implements Listener {
         ItemStack result = recipe.getResult();
 
         // Check if the recipe result is a Biome Compass.
-        if (!BiomeCompassItem.isInstance(result, language)) return;
+        if (!BiomeCompassItem.isInstance(result, language, plugin)) return;
 
         // Set result empty if player does not have the permission.
         Player player = (Player) event.getView().getPlayer();

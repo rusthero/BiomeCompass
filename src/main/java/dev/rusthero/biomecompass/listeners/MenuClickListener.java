@@ -90,7 +90,7 @@ public class MenuClickListener implements Listener {
             costMessages.add(format("§6%.2f %s", moneyCost, currencyName));
         }
 
-        String locatingMessage = format("§%s", lang.getString(ITEM_BIOME_COMPASS_LOCATING));
+        String locatingMessage = format("§e%s", lang.getString(ITEM_BIOME_COMPASS_LOCATING));
         if (costMessages.size() > 0) {
             locatingMessage += format(": §c%s: ", lang.getString(ITEM_BIOME_COMPASS_COST));
             locatingMessage += String.join("§c, ", costMessages);
@@ -99,7 +99,7 @@ public class MenuClickListener implements Listener {
         player.playSound(origin, BLOCK_CONDUIT_ACTIVATE, 1.0f, 1.0f);
 
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
-        BiomeCompassItem.ifInstance(itemInHand, lang, compass -> {
+        BiomeCompassItem.ifInstance(itemInHand, lang, plugin, compass -> {
             // Get target biome from the clicked item, so we can locate it.
             Optional<BiomeElement> element = BiomeElement.getByItemStack(clickedItem, lang);
             if (element.isEmpty()) return;
@@ -151,7 +151,8 @@ public class MenuClickListener implements Listener {
                 String biomeName = element.get().getDisplayName(lang);
                 // Modifying ItemMeta from an asynchronous task is not guaranteed to be successful, so we schedule a
                 // synchronous task to run in the main thread with a delay to ensure that the bind is successful.
-                Bukkit.getScheduler().runTaskLater(plugin, () -> compass.bindLocation(biomeName, location.get()), 3L);
+                Bukkit.getScheduler().runTaskLater(plugin, () ->
+                        compass.bindLocation(biomeName, lang, location.get(), plugin), 3L);
             });
         });
     }

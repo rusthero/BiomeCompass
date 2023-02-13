@@ -2,9 +2,11 @@ package dev.rusthero.biomecompass.lang;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import dev.rusthero.biomecompass.BiomeCompass;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,11 +16,13 @@ public class Language {
     private final HashMap<Field, String> strings;
 
     public Language(String localeCode) throws IOException {
-        try (InputStream in = getClass().getResourceAsStream(format("lang/%s.json", localeCode))) {
-            assert in != null; // AssertionError is thrown when json file does not exist for the locale
+        final String path = format("/lang/%s.json", localeCode);
+        try (InputStream stream = BiomeCompass.class.getResourceAsStream(path)) {
+            assert stream != null; // AssertionError is thrown when json file does not exist for the locale
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
             Type type = new TypeToken<Map<String, String>>() {
+
             }.getType();
             Map<String, String> jsonMap = new Gson().fromJson(reader, type);
             reader.close();
