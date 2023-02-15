@@ -2,6 +2,8 @@ package dev.rusthero.biomecompass.listeners;
 
 import dev.rusthero.biomecompass.BiomeCompass;
 import dev.rusthero.biomecompass.items.BiomeCompassItem;
+import dev.rusthero.biomecompass.lang.Field;
+import dev.rusthero.biomecompass.lang.Language;
 import dev.rusthero.biomecompass.locate.PlayerBiomeLocator;
 import dev.rusthero.biomecompass.util.Experience;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -43,7 +45,8 @@ public class ItemUseListener implements Listener {
     @EventHandler
     private void onItemUse(PlayerInteractEvent event) {
         if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) return;
-        if (event.getItem() == null || !BiomeCompassItem.isInstance(event.getItem())) return;
+        Language lang = plugin.getSettings().language;
+        if (event.getItem() == null || !BiomeCompassItem.isInstance(event.getItem(), lang, plugin)) return;
 
         Player player = event.getPlayer();
         Location location = player.getLocation();
@@ -51,12 +54,18 @@ public class ItemUseListener implements Listener {
 
         PlayerBiomeLocator locator = plugin.getPlayerBiomeLocators().get(player);
         if (locator.isRunning()) {
-            player.spigot().sendMessage(ACTION_BAR, new TextComponent("§eLocating"));
+            player.spigot().sendMessage(
+                    ACTION_BAR,
+                    new TextComponent("§e" + lang.getString(Field.ITEM_BIOME_COMPASS_LOCATING))
+            );
             player.playSound(location, BLOCK_CONDUIT_AMBIENT_SHORT, 1.0f, 1.0f);
             return;
         }
         if (locator.isOnCooldown()) {
-            player.spigot().sendMessage(ACTION_BAR, new TextComponent("§9Cooling down"));
+            player.spigot().sendMessage(
+                    ACTION_BAR,
+                    new TextComponent("§9" + lang.getString(Field.ITEM_BIOME_COMPASS_ON_COOLDOWN))
+            );
             player.playSound(location, BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
             return;
         }
@@ -65,7 +74,10 @@ public class ItemUseListener implements Listener {
         final int experienceCost = plugin.getSettings().experienceCost;
         if (experienceCost > 0)
             if (Experience.getExp(player) < experienceCost) {
-                player.spigot().sendMessage(ACTION_BAR, new TextComponent("§cInsufficient experience"));
+                player.spigot().sendMessage(
+                        ACTION_BAR,
+                        new TextComponent("§c" + lang.getString(Field.ITEM_BIOME_COMPASS_NO_EXPERIENCE))
+                );
                 player.playSound(location, BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
                 return;
             }
@@ -74,7 +86,10 @@ public class ItemUseListener implements Listener {
         final double moneyCost = plugin.getSettings().moneyCost;
         if (moneyCost > 0 && economy != null)
             if (!economy.has(player, moneyCost)) {
-                player.spigot().sendMessage(ACTION_BAR, new TextComponent("§cInsufficient funds"));
+                player.spigot().sendMessage(
+                        ACTION_BAR,
+                        new TextComponent("§c" + lang.getString(Field.ITEM_BIOME_COMPASS_NO_FUNDS))
+                );
                 player.playSound(location, BLOCK_CONDUIT_ATTACK_TARGET, 1.0f, 1.0f);
                 return;
             }
