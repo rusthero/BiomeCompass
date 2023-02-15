@@ -19,7 +19,6 @@ Here are some ways you can contribute to the project:
 We ask that all contributors follow the guidelines below when contributing code to the project:
 
 - Use four spaces for indentation. Do not use tabs.
-- Place an empty line after each method.
 - Use descriptive, meaningful names for variables and methods.
 - Use @Override when overriding a method.
 - Use TODO comments to mark places in the code that need attention or further development.
