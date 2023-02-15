@@ -171,7 +171,7 @@ public class BiomeCompassItem {
 
         // Update the custom model data if it is not set, older items created before v1.2.0 may not have the data set.
         // This also is going to update the resource pack if changed from configuration
-        if (meta.getCustomModelData() != CUSTOM_MODEL_DATA)
+        if (!meta.hasCustomModelData() || meta.getCustomModelData() != CUSTOM_MODEL_DATA)
             meta.setCustomModelData(CUSTOM_MODEL_DATA);
 
         // Update the NBT tag to check if the item is Biome Compass. Older items created before v1.3.0 may not have it.
