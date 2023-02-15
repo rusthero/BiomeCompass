@@ -1,13 +1,17 @@
 # Biome Compass v${version} Configuration File
 # Check wiki to learn more https://github.com/rusthero/BiomeCompass/wiki
 
+language: en_us
 cooldown: 5
+show_distance: true
+custom_model_data: 10918
+
+experience_cost: 64
+money_cost: 0.0
+
 resolution: 32
 radius: 6400
 cache_size: 100
-show_distance: true
-experience_cost: 64
-money_cost: 0.0
 
 biomes:
   ocean: true

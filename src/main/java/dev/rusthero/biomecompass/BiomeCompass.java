@@ -18,6 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 
+import static dev.rusthero.biomecompass.lang.Field.*;
 import static java.lang.String.format;
 
 /**
@@ -65,54 +66,65 @@ public class BiomeCompass extends JavaPlugin {
         final PluginManager pluginManager = getServer().getPluginManager();
         final ServicesManager servicesManager = getServer().getServicesManager();
 
-        // Check if the plugin is outdated and log a warning message if it is.
-        try {
-            VersionTracker versionTracker = new VersionTracker(this);
-            if (!versionTracker.isUpToDate()) {
-                String outdatedMessage = "I am outdated! The latest version is %s. " +
-                        "Please update to ensure compatibility and access to new features";
-                getLogger().warning(format(outdatedMessage, versionTracker.latestVersion));
-            }
-        } catch (IOException ignored) {
-            getLogger().warning("Version tracker could not check for the latest version");
-        }
-
         // Prepare the configuration and settings for easier access to constants.
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
-        settings = new Settings(getConfig());
+        try {
+            settings = new Settings(getConfig());
+        } catch (IOException exception) {
+            // Disable plugin if language file cannot be found/read.
+            getLogger().severe(exception.getMessage());
+            setEnabled(false);
+            return;
+        }
+
+        // Check if the plugin is outdated and log a warning message if it is.
+        try {
+            VersionTracker versionTracker = new VersionTracker(this);
+            if (!versionTracker.isUpToDate())
+                getLogger().warning(format(
+                        settings.language.getString(LOG_VERSION_TRACKER_OUTDATED),
+                        versionTracker.latestVersion
+                ));
+        } catch (IOException ignored) {
+            getLogger().warning(settings.language.getString(LOG_VERSION_TRACKER_ERROR));
+        }
 
         // Create cache to store search queries for faster access to already searched biomes in an area.
         locateBiomeCache = new LocateBiomeCache(this);
         // Create the player biome locators registry to track player cooldowns and active queries.
         playerBiomeLocators = new PlayerBiomeLocatorRegistry();
         // Create the biomes menu, which will be used by players to select a biome and initiate a search.
-        biomesMenu = new BiomesMenu(settings.biomes);
+        biomesMenu = new BiomesMenu(settings.biomes, settings.language);
 
         // Register the listeners required for the plugin to function properly.
         pluginManager.registerEvents(new ItemUseListener(this), this);
         pluginManager.registerEvents(new MenuClickListener(this), this);
         pluginManager.registerEvents(new MenuDragListener(biomesMenu), this);
-        pluginManager.registerEvents(new PrepareCraftListener(), this);
+        pluginManager.registerEvents(new PrepareCraftListener(settings.language, this), this);
 
         // Prepare Vault and economy for Biome Compass money cost.
         if (settings.moneyCost > 0)
             if (pluginManager.getPlugin("Vault") != null) {
                 RegisteredServiceProvider<Economy> registration = servicesManager.getRegistration(Economy.class);
                 if (registration != null) economy = registration.getProvider();
-            } else getLogger().warning("Money cost is disabled because Vault plugin is missing");
+            } else getLogger().warning(settings.language.getString(LOG_VAULT_MISSING));
 
         // Add a shaped recipe for the Biome Compass.
         NamespacedKey biomeCompassKey = new NamespacedKey(this, "biome_compass");
-        ShapedRecipe biomeCompassRecipe = BiomeCompassItem.getRecipe(biomeCompassKey);
+        ShapedRecipe biomeCompassRecipe = BiomeCompassItem.getRecipe(biomeCompassKey, settings.language, this);
         getServer().addRecipe(biomeCompassRecipe);
 
-        getLogger().info("BiomeCompass is enabled");
+        getLogger().info(settings.language.getString(LOG_BIOME_COMPASS_ENABLED));
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("BiomeCompass is disabled");
+        // Settings may be null if locale is wrong so that must be handled.
+        if (settings != null)
+            getLogger().info(settings.language.getString(LOG_BIOME_COMPASS_DISABLED));
+        else
+            getLogger().info("Biome Compass is disabled");
     }
 
     public Settings getSettings() {
