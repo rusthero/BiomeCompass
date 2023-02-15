@@ -128,7 +128,7 @@ public class PlayerBiomeLocator {
         String biomeName = stripColor(BiomeElement.valueOf(biome.name()).getDisplayName(plugin.getSettings().language));
         plugin.getLogger().info(format(plugin.getSettings().language.getString(Field.LOG_PLAYER_LOCATE),
                                        player.getName(),
-                                       biomeName,
+                                       biomeName.toLowerCase(),
                                        location.getBlockX(),
                                        location.getBlockY(),
                                        location.getBlockZ(),

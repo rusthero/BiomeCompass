@@ -72,7 +72,10 @@ public class BiomeCompass extends JavaPlugin {
         try {
             settings = new Settings(getConfig());
         } catch (IOException exception) {
-            throw new RuntimeException(exception);
+            // Disable plugin if language file cannot be found/read.
+            getLogger().severe(exception.getMessage());
+            setEnabled(false);
+            return;
         }
 
         // Check if the plugin is outdated and log a warning message if it is.
@@ -117,7 +120,11 @@ public class BiomeCompass extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getLogger().info(settings.language.getString(LOG_BIOME_COMPASS_DISABLED));
+        // Settings may be null if locale is wrong so that must be handled.
+        if (settings != null)
+            getLogger().info(settings.language.getString(LOG_BIOME_COMPASS_DISABLED));
+        else
+            getLogger().info("Biome Compass is disabled");
     }
 
     public Settings getSettings() {

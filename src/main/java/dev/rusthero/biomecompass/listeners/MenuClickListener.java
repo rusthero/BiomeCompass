@@ -92,7 +92,7 @@ public class MenuClickListener implements Listener {
 
         String locatingMessage = format("§e%s", lang.getString(ITEM_BIOME_COMPASS_LOCATING));
         if (costMessages.size() > 0) {
-            locatingMessage += format(": §c%s: ", lang.getString(ITEM_BIOME_COMPASS_COST));
+            locatingMessage += format(": §c%s ", lang.getString(ITEM_BIOME_COMPASS_COST));
             locatingMessage += String.join("§c, ", costMessages);
         }
         player.spigot().sendMessage(ACTION_BAR, new TextComponent(locatingMessage));
