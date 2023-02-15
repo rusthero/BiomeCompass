@@ -10,7 +10,7 @@ Here are some ways you can contribute to the project:
 - Report bugs or suggest features by creating an issue in the [issues](https://github.com/rusthero/BiomeCompass/issues)
   section of the repository.
 - Provide [translation files](https://github.com/rusthero/BiomeCompass/tree/main/src/main/resources/lang) with pull
-  requests or from [Discord](https://discord.com/invite/5C6JgvmwUe). Also we have an issue label for language support.
+  requests or from [Discord](https://discord.com/invite/5C6JgvmwUe). Adding a new language requires nothing more than creating the said file on `/resources/lang` folder. We also have an issue label, which is `language support`.
 - Contribute code by creating a pull request with your changes. Please make sure to follow the coding style guidelines.
 - Improve the documentation by making updates to the readme or other relevant documentation files.
 
