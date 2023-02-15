@@ -154,6 +154,12 @@ public enum BiomeElement {
         }
     }
 
+    /**
+     * Gets the ItemStack version of a Biome to use in GUIs.
+     *
+     * @param language Used for display name translation of the biome.
+     * @return ItemStack version of the Biome
+     */
     public ItemStack getItem(Language language) {
         ItemStack item = new ItemStack(material, 1);
         final ItemMeta meta = item.getItemMeta();
@@ -166,6 +172,12 @@ public enum BiomeElement {
         return item;
     }
 
+    /**
+     * Gets display name of a biome in the correct transliteration.
+     *
+     * @param language Selected language to read name of the biome from.
+     * @return Colored display name of the ItemStack of biome in the correct transliteration.
+     */
     public String getDisplayName(Language language) {
         return color + language.getString(Field.valueOf(format("BIOME_%s_NAME", name())));
     }

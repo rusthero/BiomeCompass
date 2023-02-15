@@ -13,7 +13,7 @@ import java.util.HashMap;
  */
 public final class Settings {
     /**
-     * The language that is going to be used for in-game messages and text for biome compass.
+     * The language that is going to be used for in-game messages and texts of Biome Compass.
      */
     public final Language language;
 

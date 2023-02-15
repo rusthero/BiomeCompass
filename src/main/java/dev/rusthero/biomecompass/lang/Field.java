@@ -1,5 +1,13 @@
 package dev.rusthero.biomecompass.lang;
 
+/**
+ * Represents fields in language/translation files. Used for easier access to fields from Language class.
+ * <p>
+ * Field names from translation files are easily transferable to this Enum. An example looks like:
+ * lang.locale_code -> LANG_LOCALE_CODE
+ *
+ * @see Language#getString(Field)
+ */
 public enum Field {
     LANG_NAME,
     LANG_NAME_TRANSLITERATION,
