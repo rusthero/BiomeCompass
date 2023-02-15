@@ -4,6 +4,7 @@
 language: en_us
 cooldown: 5
 show_distance: true
+custom_model_data: 10918
 
 experience_cost: 64
 money_cost: 0.0

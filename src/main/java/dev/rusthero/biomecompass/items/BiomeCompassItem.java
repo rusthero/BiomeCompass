@@ -30,11 +30,6 @@ public class BiomeCompassItem {
     public static final String DISPLAY_NAME = "§3Biome Compass";
 
     /**
-     * The CustomModelData value used to add custom textures to the Biome Compass item.
-     */
-    public static final int CUSTOM_MODEL_DATA = 10918;
-
-    /**
      * The default ItemStack form of the Biome Compass.
      */
     private static ItemStack defaultItem;
@@ -59,7 +54,7 @@ public class BiomeCompassItem {
         if (meta == null) return defaultItem;
 
         meta.setDisplayName("§3" + language.getString(Field.ITEM_BIOME_COMPASS_DISPLAY_NAME));
-        meta.setCustomModelData(CUSTOM_MODEL_DATA);
+        meta.setCustomModelData(plugin.getSettings().customModelData);
         NamespacedKey isBiomeCompass = new NamespacedKey(plugin, "is_biome_compass");
         meta.getPersistentDataContainer().set(isBiomeCompass, PersistentDataType.BYTE, (byte) 1);
         defaultItem.setItemMeta(meta);
@@ -171,8 +166,8 @@ public class BiomeCompassItem {
 
         // Update the custom model data if it is not set, older items created before v1.2.0 may not have the data set.
         // This also is going to update the resource pack if changed from configuration
-        if (!meta.hasCustomModelData() || meta.getCustomModelData() != CUSTOM_MODEL_DATA)
-            meta.setCustomModelData(CUSTOM_MODEL_DATA);
+        if (!meta.hasCustomModelData() || meta.getCustomModelData() != plugin.getSettings().customModelData)
+            meta.setCustomModelData(plugin.getSettings().customModelData);
 
         // Update the NBT tag to check if the item is Biome Compass. Older items created before v1.3.0 may not have it.
         if (!hasBiomeCompassData(meta, plugin)) {

@@ -30,6 +30,11 @@ public final class Settings {
     public final boolean showDistance;
 
     /**
+     * The Custom Model Data integer used to add custom textures to the Biome Compass item.
+     */
+    public final int customModelData;
+
+    /**
      * The number of experience points required to use the Biome Compass.
      */
     public final int experienceCost;
@@ -77,11 +82,12 @@ public final class Settings {
         this.language = new Language(config.getString("language"));
         this.cooldown = config.getLong("cooldown");
         this.showDistance = config.getBoolean("show_distance");
+        this.customModelData = config.getInt("custom_model_data");
+        this.experienceCost = config.getInt("experience_cost");
+        this.moneyCost = config.getDouble("money_cost");
         this.resolution = config.getInt("resolution");
         this.radius = config.getInt("radius");
         this.cacheSize = config.getInt("cache_size");
-        this.experienceCost = config.getInt("experience_cost");
-        this.moneyCost = config.getDouble("money_cost");
 
         biomes = new HashMap<>();
         ConfigurationSection section = config.getConfigurationSection("biomes");
