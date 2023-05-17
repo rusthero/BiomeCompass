@@ -11,10 +11,7 @@
     </a>
     <a href="https://www.codefactor.io/repository/github/rusthero/biomecompass">
         <img src="https://www.codefactor.io/repository/github/rusthero/biomecompass/badge" alt="CodeFactor"/>
-    </a>
-    <a href="https://discord.gg/5C6JgvmwUe">
-        <img src="https://img.shields.io/discord/1051165269709557813.svg?style=flat&color=7289DA&logo=Discord" alt="Discord"/>
-    </a>
+    </a>    
 </p>
 
 ## About
@@ -50,7 +47,7 @@ For more information about the Biome Compass plugin, including usage guide, conf
 The wiki includes detailed instructions and examples to help you use the Biome Compass, as well as answers to frequently asked questions.
 
 ## Contributing
-Contributions are welcome! Please see [CONTRIBUTING.md](https://github.com/rusthero/BiomeCompass/blob/main/CONTRIBUTING.md). You can also join the [Discord](https://discord.gg/5C6JgvmwUe) to discuss the project and ask questions.
+Contributions are welcome! Please see [CONTRIBUTING.md](https://github.com/rusthero/BiomeCompass/blob/main/CONTRIBUTING.md).
 
 ## License
 GNU General Public License ([v3.0](https://www.gnu.org/licenses/gpl.txt))
